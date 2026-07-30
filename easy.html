@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>SoundTune Easy - Chỉnh âm thanh cho người không chuyên</title>
+<meta name="theme-color" content="#0e1826">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SoundTune">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{--bg:#0a0f16;--pnl:#121b27;--pnl2:#0d1622;--line:#22314a;--txt:#eaf1f9;--dim:#8ea3bf;--acc:#38bdf8;--ok:#22c55e;--warn:#eab308;--dan:#ef4444}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -115,7 +122,7 @@ details p,details li{color:var(--dim);font-size:12.8px;line-height:1.62}
   <div class="card">
     <div class="step"><i>1</i>Bạn đang dùng dàn gì?</div>
     <div class="grid2" id="presets"></div>
-    <div class="hint" style="margin-top:9px">Chọn đúng kiểu dàn để máy biết “âm thanh đợp” với trường hợp của bạn là như thế nào.</div>
+    <div class="hint" style="margin-top:9px">Chọn đúng kiểu dàn để máy biết “âm thanh đợp” với trường hợp của bạn là như thế nào. Lựa chọn này được lưu theo từng hồ sơ địa điểm ở thanh trên cùng.</div>
   </div>
 
   <div class="card">
@@ -167,7 +174,7 @@ details p,details li{color:var(--dim);font-size:12.8px;line-height:1.62}
       <button id="btnPng">🖼 LƯU ẢNH KẾT QUẢ</button>
     </div>
     <div id="sayMsg"></div>
-    <div class="hint" style="margin-top:9px">Chỉnh xong một việc thì bấm <b>ĐO LẠI</b> để xem điểm có tăng không. Mỗi lần chỉ chỉnh một thứ, đừng chỉnh nhiều núm cùng lúc.</div>
+    <div class="hint" style="margin-top:9px">Chỉnh xong một việc thì bấm <b>ĐO LẠI</b> để xem điểm có tăng không. Mỗi lần chỉ chỉnh một thứ, đừng chỉnh nhiều núm cùng lúc. Muốn gửi cho khách thì bấm <b>Xuất báo cáo</b> ở thanh Hồ sơ — ảnh báo cáo có để tên địa điểm, ngày giờ, điểm số và danh sách việc đã chỉnh.</div>
   </div>
 
   <div class="card">
@@ -199,11 +206,20 @@ details p,details li{color:var(--dim);font-size:12.8px;line-height:1.62}
         <li><b>iPhone:</b> Cài đặt › Trợ năng › Nội dung đọc › Giọng nói › <b>Tiếng Việt</b>.</li>
         <li><b>Windows:</b> Settings › Time &amp; language › Speech › Add voices › <b>Tiếng Việt</b>.</li>
       </ul>
-      <p>Nếu máy chưa có giọng Việt, app vẫn đọc bằng giọng mặc định (nghe lơ lớ) thay vì im lặng.</p>
+      <p>Nếu máy chưa có giọng Việt, app vẫn đọc bằng giọng mặc định (nghe lơ lỡ) thay vì im lặng.</p>
+    </details>
+
+    <details><summary>Cài app vào màn hình chính để dùng khi mất mạng</summary>
+      <p>Bấm nút <b>⬇ Cài vào máy</b> ở thanh Hồ sơ (nếu trình duyệt hỗ trợ). Không thấy nút thì làm tay:</p>
+      <ul>
+        <li><b>Android / Chrome:</b> menu ⋮ › <b>Cài đặt ứng dụng</b> (hoặc Thêm vào màn hình chính).</li>
+        <li><b>iPhone / Safari:</b> nút <b>Chia sẻ</b> › <b>Thêm vào MH chính</b>.</li>
+      </ul>
+      <p>Sau khi đã mở một lần có mạng, app chạy được hoàn toàn offline — hội trường, nhà thờ, sân bãi mất sóng vẫn đo bình thường.</p>
     </details>
 
     <details><summary>Thằng điện thoại đo có tin được không?</summary>
-      <p>Con số tuyệt đối thì không, nhưng <b>hình dạng</b> đáp tuyến thì rất hữu ích: dải nào thừa, dải nào thiếu, phòng có bị dội chỗ nào. Đó chính là thứ cần để chỉnh núm. Micro điện thoại thường hụt dưới 50 Hz và trên 15 kHz, nên đừng lo nếu hai đầu trông thấp.</p>
+      <p>Con số tuyệt đối thì không, nhưng <b>hình dạng</b> đáp tuyến thì rất hứu ích: dải nào thừa, dải nào thiếu, phòng có bị dội chỗ nào. Đó chính là thứ cần để chỉnh núm. Micro điện thoại thường hụt dưới 50 Hz và trên 15 kHz, nên đừng lo nếu hai đầu trông thấp.</p>
     </details>
 
     <details><summary>Chỉnh xong rồi điểm vẫn thấp?</summary>
@@ -225,5 +241,6 @@ details p,details li{color:var(--dim);font-size:12.8px;line-height:1.62}
 </div>
 
 <script src="easy.js"></script>
+<script src="extras.js"></script>
 </body>
 </html>
