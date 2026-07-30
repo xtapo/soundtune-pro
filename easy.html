@@ -25,9 +25,12 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .row>*{flex:1 1 150px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 .pz{background:var(--c2);border:1px solid var(--bd);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font-weight:700}
+.pz.sm{padding:10px 6px;text-align:center;font-size:13.5px}
 .pz.on{border-color:var(--ac);box-shadow:0 0 0 2px rgba(56,189,248,.25)}
 .pz b{display:block;font-size:15px;margin-bottom:4px}
+.pz.sm b{font-size:13.5px;margin:0}
 .pz span{color:var(--mu);font-size:12px;font-weight:400;display:block;line-height:1.45}
 .meter{height:16px;background:#0a1220;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
 .meter i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);width:0%}
@@ -86,6 +89,15 @@ a{color:var(--ac)}
   <div class="hint" id="lvlT" style="margin-top:6px">Chưa bật micro.</div>
   <div style="height:10px"></div>
   <canvas id="live"></canvas>
+  <div style="height:14px"></div>
+  <div class="lbl">Cảnh báo hú rít — độ nhạy</div>
+  <div class="grid4" id="sens">
+    <button class="pz sm" data-s="off"><b>Tắt</b></button>
+    <button class="pz sm" data-s="lo"><b>Ít nhạy</b></button>
+    <button class="pz sm on" data-s="md"><b>Vừa</b></button>
+    <button class="pz sm" data-s="hi"><b>Nhạy</b></button>
+  </div>
+  <div class="hint" style="margin-top:8px">Nếu máy báo hú mà tai bạn <b>không nghe hú</b>, hãy chọn <b>Ít nhạy</b> hoặc <b>Tắt</b>. Nguyên nhân thường là nhạc có nốt bass mạnh, tiếng đàn hoặc giọng ngân dài — nhìn trên phổ cũng giống một đỉnh nhọn như tiếng hú.</div>
 </div>
 
 <div class="card">
@@ -143,6 +155,7 @@ a{color:var(--ac)}
   <details><summary>Mixer / bàn trộn</summary><div>Mỗi đường (channel) có riêng HIGH / MID / LOW. Chỉnh <b>đường micro</b> khi giọng hát có vấn đề; chỉnh <b>EQ tổng (Master / DSP)</b> khi cả dàn nghe sai. Danh sách việc cần làm ở trên là dành cho EQ tổng.</div></details>
   <details><summary>Vang số / DSP (Parametric EQ: Fc – Q – Gain)</summary><div>• <b>Fc</b> = tần số cần sửa (Hz).<br>• <b>Q</b> = độ hẹp. Q nhỏ (1–2) sửa cả vùng rộng; Q lớn (6–10) cắt đúng một điểm — dùng khi chống hú hoặc cắt chỗ phòng bị dội.<br>• <b>Gain</b> = tăng (+) hay cắt (−) bao nhiêu dB.<br>• Nguyên tắc vàng: <b>ưu tiên cắt chỗ thừa thay vì tăng chỗ thiếu</b>. Cắt an toàn hơn và ít hú hơn.</div></details>
   <details><summary>Mẹo chống hú không cần thiết bị</summary><div>1. Đứng <b>phía sau</b> loa, không chĩa micro vào loa.<br>2. Hạ <b>ECHO</b> và <b>HI</b> trước, sau đó mới hạ VOL micro.<br>3. Kéo loa ra khỏi góc tường 30–50 cm, hướng về phía người nghe.<br>4. Cầm micro gần miệng hơn → không cần mở to → ít hú hơn.<br>5. Mở trang này trong lúc hát để máy tự cảnh báo khi sắp hú.</div></details>
+  <details><summary>Vì sao đôi khi báo hú mà không hú?</summary><div>Máy nhìn vào phổ tần để tìm “đỉnh nhọn đột biến”. Một số thứ cũng tạo đỉnh nhọn giống tiếng hú: nốt bass mạnh, tiếng đàn organ/synth, giọng ngân dài, tiếng động điều hòa hoặc quạt.<br>Bản này đã lọc bằng 3 cách: (1) phải <b>duy trì liên tục</b> đủ lâu ở cùng một tần số, (2) <b>kiểm tra hòa âm</b> — nếu có hòa âm ở 2 và 3 lần tần số thì đó là nhạc chứ không phải hú, (3) tắt cảnh báo trong lúc đang đo và đang phát tiếng rè chuẩn.<br>Vẫn báo giả thì chuyển sang <b>Ít nhạy</b> hoặc <b>Tắt</b> ở bước 2.</div></details>
 </div>
 
 <div class="card">
@@ -160,19 +173,34 @@ var MANY=['Tiếng trầm lùng bùng, rung ầm ầm, nghe lâu bị mệt','Ti
 var FEW=['Thiếu hơi trầm, nhạc không có lực','Tiếng mỏng, khô, thiếu ấm','Giọng bị hụt, thiếu dày','Giọng bị lõm, nghe xa, chìm dưới nhạc','Nghe không rõ chữ, lời hát bị mờ','Thiếu độ sáng, tiếng bị tối','Thiếu chi tiết, tiếng bí','Thiếu độ thoáng, không gian hẹp'];
 var SHORT=['trầm sâu','tiếng trầm','trung thấp','trung','trung cao','tiếng cao','tiếng rất cao','siêu cao'];
 var PRE=[{n:'Karaoke gia đình',d:'Phòng nhỏ, hát nhạc trẻ và bolero',t:[-3,2,-2,0,1,0,1,-1]},{n:'Loa kéo / di động',d:'Loa kéo, loa bluetooth, sân nhỏ ngoài trời',t:[-6,3,-3,1,2,1,0,-2]},{n:'Hội trường / Sân khấu',d:'Đám cưới, sự kiện, ban nhạc',t:[1,2,-2,0,1,1,1,0]},{n:'Họp / Nhà thờ (giọng nói)',d:'Chủ yếu là nói, cần rõ chữ',t:[-12,-5,-3,2,3,1,0,-3]},{n:'Cafe / Nhạc nền',d:'Nghe nhẹ, mở lâu không mệt',t:[-2,1,-1,0,0,0,1,1]}];
-var pk=0,mode='pink';
+var SENS={off:null,lo:{th:21,hold:1500,hits:40},md:{th:17,hold:1000,hits:26},hi:{th:14,hold:600,hits:16}};
+var pk=0,mode='pink',sens='md';
 var ctx=null,an=null,freq=null,bins=null,micOn=false;
 var measuring=false,acc=null,accN=0,tEnd=0;
 var noiseNode=null,noiseGain=null,noiseOn=false;
-var prevScore=null,speakText='',lastFb=0,warnTo=0;
+var prevScore=null,speakText='',lastFb=0;
+var fbBand=-1,fbSince=0,fbHits=0,fbShown=false;
 function el(i){return document.getElementById(i)}
 function fmtF(f){return f>=1000?(f/1000).toFixed(f>=10000?1:2)+' kHz':f+' Hz'}
 
 var ph='';
 for(var i=0;i<PRE.length;i++)ph+='<button class="pz'+(i===0?' on':'')+'" data-i="'+i+'"><b>'+PRE[i].n+'</b><span>'+PRE[i].d+'</span></button>';
 el('presets').innerHTML=ph;
-el('presets').onclick=function(e){var b=e.target.closest('.pz');if(!b)return;pk=+b.getAttribute('data-i');var a=el('presets').querySelectorAll('.pz');for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b)};
-el('modes').onclick=function(e){var b=e.target.closest('.pz');if(!b)return;mode=b.getAttribute('data-m');var a=el('modes').querySelectorAll('.pz');for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b);el('pinkBox').style.display=(mode==='pink')?'block':'none';el('btnMeasure').textContent=(mode==='pink')?'⏺ ĐO (10 giây)':'⏺ ĐO (25 giây)'};
+function pick(box,attr,cb){
+ el(box).onclick=function(e){
+  var b=e.target.closest('.pz');if(!b)return;
+  var a=el(box).querySelectorAll('.pz');
+  for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b);
+  cb(b.getAttribute(attr));
+ };
+}
+pick('presets','data-i',function(v){pk=+v});
+pick('modes','data-m',function(v){
+ mode=v;
+ el('pinkBox').style.display=(v==='pink')?'block':'none';
+ el('btnMeasure').textContent=(v==='pink')?'⏺ ĐO (10 giây)':'⏺ ĐO (25 giây)';
+});
+pick('sens','data-s',function(v){sens=v;clearFb()});
 
 function ensureCtx(){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();return ctx}
 function startMic(){
@@ -221,24 +249,45 @@ function lvlText(bb){
  if(bb<-24)return 'Mức đang tốt ('+v+' dB) — đo được.';
  return 'To quá ('+v+' dB), dễ bị rè. Hãy giảm một chút.';
 }
+function prom(db,i){
+ if(i<0||i>30)return 0;
+ var arr=[],k;
+ for(k=Math.max(0,i-4);k<=Math.min(30,i+4);k++)if(Math.abs(k-i)>1)arr.push(db[k]);
+ if(!arr.length)return 0;
+ arr.sort(function(a,b){return a-b});
+ return db[i]-arr[Math.floor(arr.length/2)];
+}
+function clearFb(){fbBand=-1;fbHits=0;fbShown=false;el('warn').classList.remove('on')}
 function guard(db,bb){
- if(bb<-70)return;
- var best=-1,bp=0,i,k;
+ var cfg=SENS[sens];
+ if(!cfg||measuring||noiseOn||bb<-68){if(fbHits||fbShown)clearFb();return}
+ var best=-1,bp=0,i;
  for(i=6;i<27;i++){
-  var arr=[];
-  for(k=Math.max(0,i-3);k<=Math.min(30,i+3);k++)if(Math.abs(k-i)>1)arr.push(db[k]);
-  arr.sort(function(a,b){return a-b});
-  var prom=db[i]-arr[Math.floor(arr.length/2)];
-  if(db[i]>-76&&prom>bp){bp=prom;best=i}
+  var pr=prom(db,i);
+  if(db[i]>-62&&pr>bp){bp=pr;best=i}
  }
- if(best>=0&&bp>=13){
-  var f=ISO[best],cut=-Math.min(12,Math.max(3,Math.round(bp*0.6*2)/2));
-  el('warnT').innerHTML='Đang hú ở khoảng <b>'+fmtF(f)+'</b>.<br>1) Hạ nhỏ <b>ECHO</b> rồi <b>VOL micro</b> một chút.<br>2) Kéo micro ra xa loa, đừng chĩa vào loa.<br>3) Nếu có DSP: cắt tại <b>Fc '+fmtF(f)+' · Q = 8 · '+cut+' dB</b>.';
-  el('warn').classList.add('on');
-  var now=performance.now();
-  if(now-lastFb>5000){lastFb=now;say('Đang hú rít ở '+fmtF(f)+'. Hãy giảm núm ê cô hoặc âm lượng micro.')}
-  clearTimeout(warnTo);warnTo=setTimeout(function(){el('warn').classList.remove('on')},6000);
+ if(best>=0){
+  var h2=Math.max(prom(db,best+3),prom(db,best+4));
+  var h3=Math.max(prom(db,best+5),prom(db,best+6));
+  if(h2>7)bp-=7;
+  if(h3>7)bp-=5;
  }
+ var now=performance.now();
+ if(best>=0&&bp>=cfg.th){
+  if(fbBand<0||Math.abs(best-fbBand)>1){fbBand=best;fbSince=now;fbHits=1}
+  else{fbBand=best;fbHits++}
+  if(now-fbSince>=cfg.hold&&fbHits>=cfg.hits)showFb(ISO[fbBand],bp,now);
+ }else{
+  fbHits-=2;
+  if(fbHits<=0)clearFb();
+ }
+}
+function showFb(f,bp,now){
+ var cut=-Math.min(12,Math.max(3,Math.round(bp*0.6*2)/2));
+ el('warnT').innerHTML='Đang hú ở khoảng <b>'+fmtF(f)+'</b>.<br>1) Hạ nhỏ <b>ECHO</b> rồi <b>VOL micro</b> một chút.<br>2) Kéo micro ra xa loa, đừng chĩa vào loa.<br>3) Nếu có DSP: cắt tại <b>Fc '+fmtF(f)+' · Q = 8 · '+cut+' dB</b>.<br><span style="color:#c9b26a">Không nghe hú? Hãy chọn “Ít nhạy” hoặc “Tắt” ở mục Cảnh báo hú rít (bước 2).</span>';
+ el('warn').classList.add('on');
+ if(!fbShown||now-lastFb>7000){lastFb=now;say('Đang hú rít ở '+fmtF(f)+'. Hãy giảm núm ê cô hoặc âm lượng micro.')}
+ fbShown=true;
 }
 function say(t){
  try{
@@ -268,13 +317,15 @@ function toggleNoise(){
  noiseNode=ctx.createBufferSource();noiseNode.buffer=pinkBuf();noiseNode.loop=true;
  noiseGain=ctx.createGain();noiseGain.gain.value=(+el('nv').value)/100;
  noiseNode.connect(noiseGain);noiseGain.connect(ctx.destination);noiseNode.start();
- noiseOn=true;el('btnNoise').textContent='⏹ DỪNG TIẾNG RÈ';el('btnNoise').className='big rec';
+ noiseOn=true;clearFb();
+ el('btnNoise').textContent='⏹ DỪNG TIẾNG RÈ';el('btnNoise').className='big rec';
 }
 
 function measure(){
  if(!micOn||measuring)return;
  acc=[];for(var i=0;i<31;i++)acc.push(0);
  accN=0;measuring=true;tEnd=performance.now()+(mode==='pink'?10000:25000);
+ clearFb();
  el('btnMeasure').className='big rec';
 }
 function finish(){
@@ -360,8 +411,7 @@ function drawRes(d){
   g.fillStyle='#5c7192';g.fillText((v>0?'+':'')+v,2,y-2);
  }
  for(i=0;i<31;i++){
-  var val=Math.max(-14,Math.min(14,d[i])),y2=mid-val*sc;
-  var av=Math.abs(val);
+  var val=Math.max(-14,Math.min(14,d[i])),y2=mid-val*sc,av=Math.abs(val);
   g.fillStyle=av<2?'#22c55e':av<5?'#eab308':'#ef4444';
   g.fillRect(i*bw+1.5,Math.min(mid,y2),bw-3,Math.max(1,Math.abs(mid-y2)));
  }
@@ -387,8 +437,7 @@ function tap(){
  taps.push(now);
  if(taps.length>8)taps.shift();
  if(taps.length>=2){
-  var d=(taps[taps.length-1]-taps[0])/(taps.length-1);
-  var bpm=Math.round(60000/d);
+  var d=(taps[taps.length-1]-taps[0])/(taps.length-1),bpm=Math.round(60000/d);
   if(bpm>=40&&bpm<=220){el('bpm').value=bpm;calcEcho();el('tapT').textContent='Đã bấm '+taps.length+' lần → '+bpm+' BPM (1/4 nhịp = '+Math.round(60000/bpm)+' ms)'}
  }else{el('tapT').textContent='Bấm tiếp theo nhạc...'}
 }
@@ -405,9 +454,9 @@ el('btnPng').onclick=function(){
   a.click();
  }catch(e){}
 };
+el('nv').oninput=function(){el('nvV').textContent=el('nv').value;if(noiseGain)noiseGain.gain.value=(+el('nv').value)/100};
 el('bpm').oninput=calcEcho;
 el('btnTap').onclick=tap;
-window.addEventListener('resize',function(){if(!micOn)return});
 calcEcho();
 </script>
 </body>
