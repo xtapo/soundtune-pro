@@ -1,54 +1,52 @@
-# SoundTune Pro
+# 🎚️ SoundTune Pro
 
-Phần mềm kiểm tra & cân chỉnh âm thanh chạy trực tiếp trên trình duyệt (không cần cài đặt, không server, không gửi dữ liệu đi đâu).
+Bộ công cụ kiểm tra & cân chỉnh âm thanh chạy trực tiếp trên trình duyệt. Không cần cài đặt, không cần thiết bị đo chuyên dụng — chỉ cần điện thoại hoặc laptop có micro.
 
-**Chạy ngay:** https://xtapo.github.io/soundtune-pro/
+## Hai chế độ
 
-## Tính năng
+| Chế độ | Dành cho | Mở |
+| --- | --- | --- |
+| **🟢 Chế độ Dễ** | Người không biết gì về âm thanh. Làm theo 3 bước, máy chấm điểm và nói rõ xoay núm nào, tăng/giảm bao nhiêu dB. | [easy.html](easy.html) |
+| **🔵 Chuyên nghiệp (RTA)** | Kỹ thuật viên, người đã quen DSP/mixer. Phụ đồ 31 băng tần, snapshot DSP, TempoSync… | [index.html](index.html) |
 
-### 1. Phân tích phổ tần số thời gian thực (RTA)
-- 31 băng tần 1/3 octave chuẩn ISO: 20 Hz → 20 kHz
-- Chia 8 vùng: **SUB · BASS · LOW MID · MID · MID HI · HI · TREBLE · AIR**
-- Chế độ hiển thị: **Bars** (có vạch giữ đỉnh Peak Hold), **Line** (đường cong), hoặc **cả hai**
-- Tốc độ đo: **Chậm · Vừa · Nhanh · Nhấn mạnh hú** + **NearField Sub Mode**
-- Con trỏ tương tác: di chuột hoặc chạm để đọc chính xác tần số (Hz / kHz) và mức dBFS
+**Link chạy trực tiếp:**
 
-### 2. Thuật toán phát hiện hú rít (Feedback Detection) & cảnh báo giọng nói
-- Dò đỉnh dải tần nhọn đột biến vượt **Ngưỡng báo (dB)** cài đặt
-- Nội suy parabol 3 điểm để lấy tần số chính xác (ví dụ 375 Hz, 1.73 kHz)
-- Cửa sổ cảnh báo hazard màu vàng phát sáng: tần số hú, mức độ, cường độ SPL, thông số cắt **DSP Parametric EQ** (tần số trung tâm, dải tần, Q-Factor, mức cắt dB) và hướng dẫn xử lý
-- **Web Speech Synthesis** đọc cảnh báo trực tiếp bằng tiếng Việt
+- Chế độ Dễ: https://xtapo.github.io/soundtune-pro/easy.html
+- Bản chuyên nghiệp: https://xtapo.github.io/soundtune-pro/
 
-### 3. FR Compare & lưu snapshot DSP (DSP 1 → DSP 6)
-- 6 bộ nhớ chụp đáp tuyến tần số, chồng lớp đường cong để so sánh khi cân chỉnh góc loa và không gian phòng
-- Xuất ảnh đồ thị ra file **PNG**
+## Chế độ Dễ có gì (easy.html)
 
-### 4. Bộ tính TempoSync (Echo & Reverb Calculator)
-- Tính BPM, có nút **TAP TEMPO**
-- Echo Delay (ms) theo từng phân khúc nhịp: 1/1, 1/2, 1/4, 1/8, 1/16, 1/32, Dotted, Triplet
-- **Total Reverb Time (RT60)**, Pre-Delay, Feedback %, HF Damping, Low Cut cho các dòng vang số DSP
+- **Chọn kiểu dàn**: Karaoke gia đình · Loa kéo/di động · Hội trường/Sân khấu · Họp/Nhà thờ (giọng nói) · Cafe/Nhạc nền. Mỗi kiểu có đường đáp tuyến mục tiêu riêng.
+- **Tự phát tiếng rè chuẩn (pink noise)** để đo chính xác, hoặc đo bằng một bài nhạc quen thuộc.
+- **Chấm điểm 0–100** kèm đèn màu và so điểm trước / sau khi chỉnh.
+- **Danh sách việc cần làm bằng tiếng Việt thường ngày**, ví dụ: “Tiếng bị ù, nặng đầu → GIẢM khoảng 3.5 dB ở núm LOW/BASS”.
+- **Phát hiện phòng bị dội** (cross-hair cộng hưởng phòng) kèm thông số cắt Fc / Q / dB.
+- **Cảnh báo hú rít tự động + giọng đọc tiếng Việt** ngay trong lúc hát.
+- **Bộ tính Echo/Vang** có TAP TEMPO, ra số DLY (ms), RPT, RT60, LO/HI cut theo từng kiểu hát.
+- **Hướng dẫn “chỗ nào là núm nào”** cho amply karaoke, mixer và DSP.
+- Xuất ảnh kết quả PNG.
 
-### 5. Bộ mô phỏng hú rít & Test Voice
-- Phát tín hiệu giả lập 375 Hz, 1.73 kHz, 1.80 kHz, 2.50 kHz để thử thuật toán và giọng đọc ngay trên trình duyệt, không cần thiết bị ngoài
+## Bản chuyên nghiệp có gì (index.html)
 
-## Yêu cầu
+- Phân tích phổ thời gian thực **31 băng tần ISO 1/3 octave (20 Hz – 20 kHz)**, chia 8 vùng: SUB, BASS, LOW MID, MID, MID HI, HI, TREBLE, AIR.
+- Hiển thị **Bars có Peak Hold / Line / cả hai**; tốc độ đo Chậm · Vừa · Nhanh · Nhấn mạnh hú; chế độ **NearField Sub**.
+- Con trỏ tương tác đọc chính xác tần số (Hz/kHz) và mức dBFS.
+- **Thuật toán phát hiện hú rít** kèm cảnh báo hazard vàng: tần số hú, mức độ, SPL, thông số cắt Parametric EQ (Fc, BW, Q, Gain) và hướng dẫn xử lý + giọng đọc tiếng Việt.
+- **FR Compare**: lưu 6 snapshot **DSP 1 – DSP 6** để chồng đường cong so sánh, xuất ảnh PNG.
+- **TempoSync**: TAP TEMPO, bảng Echo Delay theo 1/1 – 1/2 – 1/4 – 1/8 – 1/16, Dotted, Triplet và tính RT60.
+- **Bộ mô phỏng hú rít** 375 Hz · 1.73 kHz · 1.80 kHz · 2.50 kHz để thử thuật toán và giọng đọc không cần thiết bị ngoài.
 
-- Chrome / Edge / Safari bản mới (Web Audio API + getUserMedia + Web Speech Synthesis)
-- Truy cập micro chỉ hoạt động qua **HTTPS** hoặc `localhost` (link GitHub Pages ở trên đã là HTTPS)
-- Nên tắt Echo Cancellation / Noise Suppression của hệ điều hành để phép đo chính xác (ứng dụng đã yêu cầu tắt qua constraints)
+## Lưu ý khi sử dụng
 
-## Ghi chú kỹ thuật
-
-- FFT 16384 @ 48 kHz → ~2.9 Hz mỗi bin, đủ tách các đỉnh hú sát nhau (1.73 kHz vs 1.80 kHz). Chế độ *Nhanh* dùng FFT 8192 để phản ứng tức thì.
-- Prominence được tính so với **median nền phổ ±0.55 octave**; Q suy ra từ dải −3 dB quanh đỉnh; mức cắt đề nghị ≈ 0.6 × độ vượt ngưỡng, giới hạn −3 → −12 dB.
-- NearField Sub Mode bù cộng hưởng cận trường/biên: −10 dB tại 20 Hz, giảm dần về 0 dB từ ~300 Hz.
-- dBFS là mức số nội bộ của trình duyệt. Dùng thanh **Hiệu chuẩn SPL** để khớp với máy đo SPL thật trước khi đọc chỉ số SPL.
+- Micro chỉ hoạt động khi trang được mở bằng **https** (không mở bằng `file://`).
+- Nên dùng **Chrome** hoặc **Edge** để có giọng đọc tiếng Việt (Web Speech Synthesis).
+- Đặt máy ở chỗ người nghe, cao ngang tai, cách loa ít nhất 2 m.
+- Micro điện thoại/laptop không phải micro đo chuẩn nên số liệu mang tính **tương đối**; rất tốt để tìm chỗ thừa/thiếu và so trước – sau, nhưng tai người vẫn quyết định cuối cùng.
 
 ## Chạy offline
 
-Tải `index.html` về và mở bằng trình duyệt. Lưu ý: mở bằng `file://` một số trình duyệt sẽ chặn micro — khi đó chạy một web server tĩnh:
+Tải `easy.html` hoặc `index.html` về máy — mỗi file là một ứng dụng độc lập, không phụ thuộc thư viện ngoài. Tuy nhiên nên phục vụ qua https để dùng được micro.
 
-```bash
-python3 -m http.server 8080
-# rồi mở http://localhost:8080
-```
+## Giấy phép
+
+MIT — dùng tự do cho công việc cá nhân và dịch vụ âm thanh.
