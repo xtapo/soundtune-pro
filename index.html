@@ -16,7 +16,7 @@ header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px
 header h1{margin:0;font-size:15px;letter-spacing:.6px;white-space:nowrap}
 header h1 span{color:var(--acc)}
 .grow{flex:1}
-.badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:#0a121c}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:#0a121c;white-space:nowrap}
 .badge.on{color:#03211a;background:var(--ok);border-color:var(--ok);font-weight:700}
 button{font-family:inherit;font-size:12.5px;color:var(--txt);background:#16222f;border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;transition:.15s}
 button:hover{background:#1e2f42;border-color:#2d4359}
@@ -31,12 +31,18 @@ input[type=range]{width:150px;accent-color:var(--acc)}
 .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;background:var(--pnl);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:10px}
 .fld{display:flex;align-items:center;gap:7px}
 .fld label{color:var(--dim);font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
-.val{font-variant-numeric:tabular-nums;color:var(--acc);font-weight:700;min-width:52px;display:inline-block}
+.val{font-variant-numeric:tabular-nums;color:var(--acc);font-weight:700;min-width:52px;display:inline-block;white-space:nowrap}
 .chartbox{position:relative;background:var(--pnl2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 canvas#rta{display:block;width:100%;height:390px;touch-action:none}
-.readout{display:flex;flex-wrap:wrap;gap:8px;padding:8px 10px;border-top:1px solid var(--line);background:#0a121d;font-variant-numeric:tabular-nums}
+
+/* Hang thong so: luoi co dinh 3 cot (mobile 2 cot) -> khong bao gio doi so dong */
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 10px;border-top:1px solid var(--line);background:#0a121d;font-variant-numeric:tabular-nums}
 .chip{background:#111e2c;border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px}
 .chip b{color:var(--acc)}
+.readout .chip{min-width:0;overflow:hidden}
+.readout .chip i{display:block;font-style:normal;color:var(--dim);font-size:10px;letter-spacing:.4px;text-transform:uppercase;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.readout .chip b{display:block;color:var(--acc);font-size:12.5px;font-weight:700;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
 .tabs{display:flex;gap:6px;margin:14px 0 10px;flex-wrap:wrap}
 .tabs button{border-radius:999px}
 .panel{display:none;background:var(--pnl);border:1px solid var(--line);border-radius:12px;padding:12px}
@@ -67,7 +73,25 @@ td b{color:var(--acc)}
 #alert th{color:#fde68a}
 #alert td b{color:#fff}
 #alert .fix{margin-top:8px;font-size:11.8px;line-height:1.5;color:#fde68a;background:rgba(0,0,0,.28);border-radius:8px;padding:7px 8px}
-@media(max-width:640px){canvas#rta{height:300px}header h1{font-size:13px}}
+
+@media(max-width:760px){
+  header{padding:8px 10px;gap:7px}
+  header h1{font-size:12.5px;flex:1 1 100%}
+  canvas#rta{height:300px}
+  .wrap{padding:10px}
+  .bar{gap:9px 12px;padding:9px 10px}
+  .readout{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;padding:7px 8px}
+  .readout .chip{padding:4px 7px}
+  .readout .chip i{font-size:9.5px}
+  .readout .chip b{font-size:11.5px}
+  .tabs{gap:5px;margin:12px 0 9px}
+  .tabs button{font-size:11.5px;padding:6px 10px}
+  #alert{right:8px;left:8px;bottom:8px;width:auto}
+}
+@media(max-width:400px){
+  .readout .chip b{font-size:10.8px}
+  .readout .chip i{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -114,12 +138,12 @@ td b{color:var(--acc)}
   <div class="chartbox">
     <canvas id="rta"></canvas>
     <div class="readout">
-      <span class="chip">Con trỏ: <b id="cF">—</b> / <b id="cD">—</b></span>
-      <span class="chip">Băng tần gần nhất: <b id="cB">—</b></span>
-      <span class="chip">Đỉnh hiện tại: <b id="pk">—</b></span>
-      <span class="chip">Vùng trội: <b id="zn">—</b></span>
-      <span class="chip">Tổng mức: <b id="lvl">—</b></span>
-      <span class="chip">SPL ước tính: <b id="spl">—</b></span>
+      <span class="chip"><i>Con trỏ</i><b><span id="cF">—</span> · <span id="cD">—</span></b></span>
+      <span class="chip"><i>Băng tần gần nhất</i><b id="cB">—</b></span>
+      <span class="chip"><i>Đỉnh hiện tại</i><b id="pk">—</b></span>
+      <span class="chip"><i>Vùng trội</i><b id="zn">—</b></span>
+      <span class="chip"><i>Tổng mức</i><b id="lvl">—</b></span>
+      <span class="chip"><i>SPL ước tính</i><b id="spl">—</b></span>
     </div>
   </div>
 
