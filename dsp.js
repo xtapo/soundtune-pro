@@ -23,17 +23,40 @@ function envelope(x,n,sr){
   return {t:t,db:db};
 }
 
-/* Tim thoi diem tat tieng: doan tut doc nhat sau giay thu 0.9 */
+/* Tim thoi diem tat tieng.
+
+   Cach cu (chon doan 60 ms tut manh nhat) SAI: duong dang cua phong gan nhu
+   la duong thang deu theo dB, nen moi diem trong ca doan dang tut deu tut
+   bang nhau. Chi can nhieu 0.2 dB la bat nham cho, roi decay() lay muc chuan
+   l0 ngay trong doan dang tut => RT60 do ra ngan hon that (phong 0.6 s bao
+   0.37 s, sai 38 %).
+
+   Cach moi: lay muc on dinh luc con phat (plat) va nen im sau khi tat (flo)
+   bang phan vi, roi do NGUOC tu cuoi ve dau tim khung cuoi cung con nam o
+   muc on dinh - do chinh la mep tat tieng. Bat buoc 300 ms sau do phai tut
+   that su de khong bat nham mot tieng dong la giua tail. */
 function findCut(e){
-  var best=-1,bv=0,i,j,a,b2,c;
-  for(i=12;i<e.db.length-12;i++){
-    if(e.t[i]<0.9) continue;
-    a=0; for(j=i-12;j<i;j++) a+=e.db[j]; a/=12;
-    b2=0; for(j=i;j<i+12;j++) b2+=e.db[j]; b2/=12;
-    c=b2-a;
-    if(c<bv){ bv=c; best=i }
+  var db=e.db, t=e.t, n=db.length, i, j;
+  if(n<80) return {i:-1,drop:0};
+  var srt=[]; for(i=0;i<n;i++) srt.push(db[i]);
+  srt.sort(function(a,b){return b-a});
+  var plat=srt[Math.floor(n*0.10)];
+  var flo=srt[n-1-Math.floor(n*0.05)];
+  var span=plat-flo;
+  if(span<6) return {i:-1,drop:span};
+  var need=Math.min(6,span*0.5);
+  var dt=(t[1]-t[0])||0.005;
+  var K=8, F=Math.max(8,Math.round(0.3/dt));
+  for(i=n-1-F;i>=12;i--){
+    if(t[i]<0.9) break;
+    if(db[i]<plat-1.5) continue;
+    var ok=1;
+    for(j=i+1;j<=i+K;j++){ if(db[j]>plat-1.5){ ok=0; break } }
+    if(!ok) continue;
+    if(db[i+F]>plat-need) continue;
+    return {i:Math.min(n-1,i+1), drop:span};
   }
-  return {i:best,drop:-bv};
+  return {i:-1,drop:span};
 }
 
 /* T20 / T15 / T10 quy doi ra RT60 (ISO 3382) */
