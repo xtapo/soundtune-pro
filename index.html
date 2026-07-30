@@ -18,6 +18,16 @@ header h1 span{color:var(--acc)}
 .grow{flex:1}
 .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:#0a121c;white-space:nowrap}
 .badge.on{color:#03211a;background:var(--ok);border-color:var(--ok);font-weight:700}
+
+/* Nut chuyen doi 2 che do */
+.modesw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#0a121c;font-size:11.5px;font-weight:800;flex:0 0 auto}
+.modesw span,.modesw a{padding:6px 12px;color:var(--dim);text-decoration:none;white-space:nowrap;transition:.15s}
+.modesw .cur{background:var(--acc);color:#04202b}
+.modesw a:hover{background:#18293a;color:var(--txt)}
+.swBig{display:block;text-align:center;text-decoration:none;color:#04202b;font-weight:800;font-size:14.5px;
+  background:linear-gradient(180deg,#22d3ee,#0891b2);border:1px solid #67e8f9;border-radius:12px;padding:13px 12px;margin-top:14px}
+.swBig small{display:block;font-weight:600;font-size:11.5px;color:#04384a;margin-top:2px}
+
 button{font-family:inherit;font-size:12.5px;color:var(--txt);background:#16222f;border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;transition:.15s}
 button:hover{background:#1e2f42;border-color:#2d4359}
 button.primary{background:linear-gradient(180deg,#0891b2,#0e7490);border-color:#22d3ee;font-weight:700}
@@ -91,6 +101,7 @@ td b{color:var(--acc)}
 @media(max-width:400px){
   .readout .chip b{font-size:10.8px}
   .readout .chip i{font-size:9px}
+  .modesw span,.modesw a{padding:5px 9px;font-size:11px}
 }
 </style>
 </head>
@@ -98,6 +109,10 @@ td b{color:var(--acc)}
 
 <header>
   <h1>SoundTune <span>Pro</span> — RTA &amp; Feedback Detector</h1>
+  <nav class="modesw" title="Chuyển đổi chế độ">
+    <a href="easy.html">🙂 Dễ</a>
+    <span class="cur">🎛 Chuyên</span>
+  </nav>
   <span id="stt" class="badge">Micro: chưa bật</span>
   <span id="srate" class="badge">—</span>
   <div class="grow"></div>
@@ -226,8 +241,9 @@ td b{color:var(--acc)}
       </tbody>
     </table>
     <div class="hint">Lưu ý: dBFS là mức số của trình duyệt, không phải SPL tuyệt đối. Hãy dùng thanh “Hiệu chuẩn SPL” để khớp với máy đo SPL cầm tay (hoặc app đo SPL) rồi mới đọc giá trị SPL.</div>
-    <div class="hint">Cần bản đơn giản cho người không chuyên? <a href="easy.html" style="color:var(--acc)">Mở Chế độ Dễ →</a></div>
   </div>
+
+  <a class="swBig" href="easy.html">🙂 CHUYỂN SANG CHẾ ĐỘ DỄ<small>Chỉ dẫn từng bước bằng lời thường, cho người không chuyên về âm thanh</small></a>
 
 </div>
 
