@@ -1,0 +1,44 @@
+{
+  "name": "SoundTune — Kiểm tra & cân chỉnh âm thanh",
+  "short_name": "SoundTune",
+  "description": "Phân tích phổ tần 31 băng ISO, dò hú rít, tính echo/vang và hướng dẫn cân chỉnh âm thanh bằng tiếng Việt. Chạy được khi không có mạng.",
+  "lang": "vi",
+  "dir": "ltr",
+  "start_url": "./easy.html",
+  "scope": "./",
+  "id": "soundtune-pro",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#080b11",
+  "theme_color": "#0d1521",
+  "categories": ["utilities", "music", "productivity"],
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Chế độ Dễ (từng bước)",
+      "short_name": "Dễ",
+      "description": "Chỉ dẫn cân chỉnh bằng lời thường",
+      "url": "./easy.html"
+    },
+    {
+      "name": "Chế độ Chuyên (RTA 31 băng)",
+      "short_name": "Chuyên",
+      "description": "Phổ tần, snapshot DSP, PEQ",
+      "url": "./index.html"
+    }
+  ]
+}
