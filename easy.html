@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang='vi'>
+<html lang="vi">
 <head>
-<meta charset='utf-8'>
-<meta name='viewport' content='width=device-width,initial-scale=1'>
-<title>SoundTune Easy - Che do De cho nguoi khong chuyen</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SoundTune Easy — Chế độ Dễ (cho người không chuyên)</title>
 <style>
 *{box-sizing:border-box}
-:root{--bg:#080d16;--card:#0f1726;--card2:#131d30;--bd:#22314a;--tx:#e6edf7;--mu:#8ea3bf;--ac:#38bdf8}
-html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px;-webkit-text-size-adjust:100%}
+:root{--bg:#080d16;--c1:#0f1726;--c2:#131d30;--bd:#22314a;--tx:#e6edf7;--mu:#8ea3bf;--ac:#38bdf8}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;font-size:16px}
 .wrap{max-width:900px;margin:0 auto;padding:14px 14px 70px}
 h1{font-size:22px;margin:6px 0 4px}
 .sub{color:var(--mu);font-size:13px;line-height:1.6;margin-bottom:16px}
-.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+.card{background:var(--c1);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
 .step{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .num{width:30px;height:30px;border-radius:50%;background:var(--ac);color:#04121c;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .step h2{font-size:17px;margin:0}
 .hint{color:var(--mu);font-size:13px;line-height:1.6}
-button{font:inherit;font-weight:700;color:var(--tx);background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:13px 15px;cursor:pointer}
+button{font:inherit;font-weight:700;color:var(--tx);background:var(--c2);border:1px solid var(--bd);border-radius:12px;padding:13px 15px;cursor:pointer}
 button:hover{background:#1a2740}
 button:disabled{opacity:.5;cursor:not-allowed}
 .big{width:100%;font-size:18px;padding:18px;background:linear-gradient(180deg,#1d4ed8,#1e3a8a);border-color:#3b62c9}
@@ -24,221 +24,219 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .big.rec{background:linear-gradient(180deg,#b91c1c,#7f1d1d);border-color:#e05555}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .row>*{flex:1 1 150px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.pz{background:var(--card2);border:1px solid var(--bd);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.pz{background:var(--c2);border:1px solid var(--bd);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font-weight:700}
 .pz.on{border-color:var(--ac);box-shadow:0 0 0 2px rgba(56,189,248,.25)}
 .pz b{display:block;font-size:15px;margin-bottom:4px}
-.pz span{color:var(--mu);font-size:12px;font-weight:400;display:block;line-height:1.4}
+.pz span{color:var(--mu);font-size:12px;font-weight:400;display:block;line-height:1.45}
 .meter{height:16px;background:#0a1220;border:1px solid var(--bd);border-radius:8px;overflow:hidden}
-.meter i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);width:0%;transition:width .08s linear}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#eab308,#ef4444);width:0%}
 .score{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
 .gauge{width:118px;height:118px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto;color:#04121c;background:#334155}
 .gauge b{font-size:36px;line-height:1}
 .gauge span{font-size:11px;letter-spacing:1px}
 ul.todo{list-style:none;padding:0;margin:0}
-ul.todo li{background:var(--card2);border:1px solid var(--bd);border-left:5px solid #38bdf8;border-radius:10px;padding:12px;margin-bottom:10px}
+ul.todo li{background:var(--c2);border:1px solid var(--bd);border-left:5px solid #38bdf8;border-radius:10px;padding:12px;margin-bottom:10px}
 ul.todo b{display:block;font-size:15px;margin-bottom:4px}
 ul.todo small{color:var(--mu);font-size:13px;line-height:1.5;display:block}
-ul.todo .do{color:#7ee2a8;font-weight:700;margin-top:7px;font-size:14px;line-height:1.5}
+ul.todo .do{color:#7ee2a8;font-weight:700;margin-top:7px;font-size:14px;line-height:1.55}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{border:1px solid var(--bd);padding:8px;text-align:left}
-th{background:var(--card2);color:var(--mu);font-weight:600}
+th{background:var(--c2);color:var(--mu);font-weight:600}
 #warn{display:none;background:#3b2a06;border:2px solid #eab308;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 0 26px rgba(234,179,8,.35)}
 #warn.on{display:block}
 #warn h3{margin:0 0 6px;color:#fde047;font-size:18px}
-#warn div{font-size:14px;line-height:1.6}
+#warn div{font-size:14px;line-height:1.65}
 input[type=number]{font:inherit;background:#0a1220;color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:12px;width:100%}
 input[type=range]{width:100%}
-details{background:var(--card2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-top:10px}
+details{background:var(--c2);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-top:10px}
 summary{cursor:pointer;font-weight:700}
-details div{font-size:13.5px;color:var(--mu);line-height:1.7;margin-top:8px}
+details div{font-size:13.5px;color:var(--mu);line-height:1.75;margin-top:8px}
 canvas{width:100%;height:130px;background:#0a1220;border:1px solid var(--bd);border-radius:10px;display:block}
 a{color:var(--ac)}
-.foot{color:var(--mu);font-size:12px;line-height:1.7}
+.foot{color:var(--mu);font-size:12.5px;line-height:1.75}
 .lbl{font-size:12px;color:var(--mu);margin-bottom:5px}
 </style>
 </head>
 <body>
-<div class='wrap'>
+<div class="wrap">
 
-<h1>&#127899; SoundTune Easy &mdash; Ch&#7871; &#273;&#7897; D&#7877;</h1>
-<div class='sub'>Kh&#244;ng c&#7847;n bi&#7871;t g&#236; v&#7873; &#226;m thanh. B&#7841;n ch&#7881; l&#224;m theo <b>3 b&#432;&#7899;c</b>, m&#225;y s&#7869; ch&#7845;m &#273;i&#7875;m d&#224;n c&#7911;a b&#7841;n v&#224; n&#243;i r&#245; <b>xoay n&#250;m n&#224;o, t&#259;ng hay gi&#7843;m bao nhi&#234;u dB</b>. &middot; <a href='index.html'>M&#7903; b&#7843;n chuy&#234;n nghi&#7879;p (RTA 31 b&#259;ng t&#7847;n) &rarr;</a></div>
+<h1>🎚️ SoundTune Easy — Chế độ Dễ</h1>
+<div class="sub">Không cần biết gì về âm thanh. Bạn chỉ làm theo <b>3 bước</b>, máy sẽ chấm điểm dàn của bạn và nói rõ <b>xoay núm nào, tăng hay giảm bao nhiêu dB</b>. · <a href="index.html">Mở bản chuyên nghiệp (RTA 31 băng tần) →</a></div>
 
-<div id='warn'>
-  <h3>&#9888;&#65039; &#272;ANG H&#218; R&#205;T &mdash; X&#7916; L&#221; NGAY</h3>
-  <div id='warnT'></div>
+<div id="warn">
+  <h3>⚠️ ĐANG HÚ RÍT — XỬ LÝ NGAY</h3>
+  <div id="warnT"></div>
 </div>
 
-<div class='card'>
-  <div class='step'><div class='num'>1</div><h2>B&#7841;n &#273;ang ch&#7881;nh d&#224;n n&#224;o?</h2></div>
-  <div class='hint'>Ch&#7885;n &#273;&#250;ng ki&#7875;u d&#224;n &#273;&#7875; m&#225;y bi&#7871;t &quot;hay&quot; l&#224; nh&#432; th&#7871; n&#224;o. Ch&#7885;n xong m&#7899;i &#273;o.</div>
-  <div style='height:10px'></div>
-  <div class='grid' id='presets'></div>
+<div class="card">
+  <div class="step"><div class="num">1</div><h2>Bạn đang chỉnh dàn nào?</h2></div>
+  <div class="hint">Chọn đúng kiểu dàn để máy biết “hay” là như thế nào. Chọn xong mới đo.</div>
+  <div style="height:10px"></div>
+  <div class="grid" id="presets"></div>
 </div>
 
-<div class='card'>
-  <div class='step'><div class='num'>2</div><h2>&#272;&#7863;t m&#225;y &#7903; ch&#7895; ng&#432;&#7901;i nghe &amp; b&#7853;t micro</h2></div>
-  <div class='hint'>&#272;&#7863;t &#273;i&#7879;n tho&#7841;i / laptop &#7903; gi&#7919;a ph&#7887;ng, cao ngang tai ng&#432;&#7901;i nghe, c&#225;ch loa &#237;t nh&#7845;t 2 m&#233;t. Kh&#244;ng c&#7847;m tay che micro.</div>
-  <div style='height:10px'></div>
-  <button id='btnMic' class='big'>&#127908; B&#7852;T MICRO</button>
-  <div style='height:12px'></div>
-  <div class='meter'><i id='lvl'></i></div>
-  <div class='hint' id='lvlT' style='margin-top:6px'>Ch&#432;a b&#7853;t micro.</div>
-  <div style='height:10px'></div>
-  <canvas id='live'></canvas>
+<div class="card">
+  <div class="step"><div class="num">2</div><h2>Đặt máy ở chỗ người nghe &amp; bật micro</h2></div>
+  <div class="hint">Đặt điện thoại / laptop ở giữa phòng, cao ngang tai người nghe, cách loa ít nhất 2 mét. Không cầm tay che micro.</div>
+  <div style="height:10px"></div>
+  <button id="btnMic" class="big">🎤 BẬT MICRO</button>
+  <div style="height:12px"></div>
+  <div class="meter"><i id="lvl"></i></div>
+  <div class="hint" id="lvlT" style="margin-top:6px">Chưa bật micro.</div>
+  <div style="height:10px"></div>
+  <canvas id="live"></canvas>
 </div>
 
-<div class='card'>
-  <div class='step'><div class='num'>3</div><h2>Ph&#225;t ti&#7871;ng qua d&#224;n r&#7891;i b&#7845;m &#272;O</h2></div>
-  <div class='lbl'>C&#225;ch ph&#225;t ti&#7871;ng &#273;&#7875; &#273;o:</div>
-  <div class='grid' id='modes'>
-    <button class='pz on' data-m='pink'><b>A. Ti&#7871;ng r&#232; chu&#7863;n (ch&#237;nh x&#225;c nh&#7845;t)</b><span>D&#249;ng khi m&#225;y n&#224;y &#273;ang l&#224; ngu&#7891;n ph&#225;t v&#224;o d&#224;n (Bluetooth / d&#226;y AUX). B&#7845;m n&#250;t b&#234;n d&#432;&#7899;i, &#273;o 10 gi&#226;y.</span></button>
-    <button class='pz' data-m='song'><b>B. B&#7853;t 1 b&#224;i nh&#7841;c quen</b><span>D&#249;ng khi d&#224;n &#273;&#432;&#7907;c ph&#225;t t&#7915; ngu&#7891;n kh&#225;c. M&#7903; nh&#7841;c to nh&#432; l&#250;c d&#249;ng th&#7853;t, &#273;o 25 gi&#226;y.</span></button>
+<div class="card">
+  <div class="step"><div class="num">3</div><h2>Phát tiếng qua dàn rồi bấm ĐO</h2></div>
+  <div class="lbl">Cách phát tiếng để đo:</div>
+  <div class="grid" id="modes">
+    <button class="pz on" data-m="pink"><b>A. Tiếng rè chuẩn (chính xác nhất)</b><span>Dùng khi máy này đang là nguồn phát vào dàn (Bluetooth / dây AUX). Bấm nút bên dưới, đo 10 giây.</span></button>
+    <button class="pz" data-m="song"><b>B. Bật 1 bài nhạc quen</b><span>Dùng khi dàn phát từ nguồn khác. Mở nhạc to như lúc dùng thật, đo 25 giây.</span></button>
   </div>
-  <div style='height:12px'></div>
-  <div id='pinkBox'>
-    <div class='row'>
-      <button id='btnNoise'>&#9654;&#65039; PH&#193;T TI&#7870;NG R&#200; CHU&#7848;N</button>
-      <div><div class='lbl'>&#194;m l&#432;&#7907;ng ti&#7871;ng r&#232;: <span id='nvV'>25</span>%</div><input id='nv' type='range' min='5' max='80' value='25'></div>
+  <div style="height:12px"></div>
+  <div id="pinkBox">
+    <div class="row">
+      <button id="btnNoise">▶️ PHÁT TIẾNG RÈ CHUẨN</button>
+      <div><div class="lbl">Âm lượng tiếng rè: <span id="nvV">25</span>%</div><input id="nv" type="range" min="5" max="80" value="25"></div>
     </div>
-    <div class='hint' style='margin-top:8px'>M&#7903; ti&#7871;ng r&#232; to v&#7915;a &#273;&#7911; nghe r&#245; kh&#7855;p ph&#7887;ng (kho&#7843;ng b&#7857;ng l&#250;c hai ng&#432;&#7901;i n&#243;i chuy&#7879;n l&#7899;n ti&#7871;ng). Kh&#244;ng c&#7847;n m&#7903; qu&#225; l&#7899;n.</div>
+    <div class="hint" style="margin-top:8px">Mở tiếng rè to vừa đủ nghe rõ khắp phòng (khoảng bằng lúc hai người nói chuyện lớn tiếng). Không cần mở quá lớn.</div>
   </div>
-  <div style='height:12px'></div>
-  <button id='btnMeasure' class='big' disabled>&#9210; &#272;O (10 gi&#226;y)</button>
+  <div style="height:12px"></div>
+  <button id="btnMeasure" class="big" disabled>⏺ ĐO (10 giây)</button>
 </div>
 
-<div class='card' id='result' style='display:none'>
-  <div class='step'><div class='num'>&#10003;</div><h2>K&#7871;t qu&#7843; &amp; vi&#7879;c c&#7847;n l&#224;m</h2></div>
-  <div class='score'>
-    <div class='gauge' id='gauge'><b>--</b><span>&#272;I&#7874;M</span></div>
-    <div id='status' style='flex:1 1 220px'></div>
+<div class="card" id="result" style="display:none">
+  <div class="step"><div class="num">✓</div><h2>Kết quả &amp; việc cần làm</h2></div>
+  <div class="score">
+    <div class="gauge" id="gauge"><b>--</b><span>ĐIỂM</span></div>
+    <div id="status" style="flex:1 1 220px"></div>
   </div>
-  <ul class='todo' id='todo'></ul>
-  <div class='lbl' style='margin-top:6px'>Bi&#7875;u &#273;&#7891; l&#7879;ch (tr&#234;n v&#7841;ch gi&#7919;a = &#273;ang th&#7915;a, d&#432;&#7899;i = &#273;ang thi&#7871;u)</div>
-  <canvas id='res' style='height:150px'></canvas>
-  <div style='height:12px'></div>
-  <div class='row'>
-    <button id='btnSay'>&#128266; &#272;&#7884;C K&#7870;T QU&#7842; B&#7856;NG GI&#7884;NG N&#211;I</button>
-    <button id='btnPng'>&#128247; L&#431;U &#7842;NH K&#7870;T QU&#7842; (PNG)</button>
+  <ul class="todo" id="todo"></ul>
+  <div class="lbl" style="margin-top:6px">Biểu đồ lệch — cột lên trên vạch giữa là đang thừa, xuống dưới là đang thiếu</div>
+  <canvas id="res" style="height:150px"></canvas>
+  <div style="height:12px"></div>
+  <div class="row">
+    <button id="btnSay">🔊 ĐỌC KẾT QUẢ BẰNG GIỌNG NÓI</button>
+    <button id="btnPng">📷 LƯU ẢNH KẾT QUẢ (PNG)</button>
   </div>
-  <div class='hint' style='margin-top:10px'>Ch&#7881;nh xong theo danh s&#225;ch tr&#234;n &rarr; b&#7845;m <b>&#272;O L&#7840;I</b> &#7903; b&#432;&#7899;c 3. M&#225;y s&#7869; so &#273;i&#7875;m tr&#432;&#7899;c/sau cho b&#7841;n bi&#7871;t &#273;&#227; t&#7889;t h&#417;n ch&#432;a. L&#224;m t&#7915;ng vi&#7879;c m&#7897;t, m&#7895;i l&#7847;n ch&#7881;nh 1&ndash;2 n&#250;m r&#7891;i &#273;o l&#7841;i.</div>
+  <div class="hint" style="margin-top:10px">Chỉnh xong theo danh sách trên → bấm <b>ĐO LẠI</b> ở bước 3. Máy sẽ so điểm trước/sau để bạn biết đã tốt hơn chưa. Mỗi lần chỉ chỉnh 1–2 núm rồi đo lại.</div>
 </div>
 
-<div class='card'>
-  <div class='step'><div class='num'>&#9834;</div><h2>Ch&#7881;nh Echo / Vang cho d&#7877;</h2></div>
-  <div class='hint'>Nh&#7853;p nh&#7883;p b&#224;i h&#225;t (BPM) ho&#7863;c b&#7845;m theo nh&#7841;c v&#224;o n&#250;t <b>B&#7844;M THEO NH&#7840;C</b> kho&#7843;ng 4&ndash;8 l&#7847;n. M&#225;y t&#237;nh ra s&#7889; DLY / RPT / RT60 &#273;&#7875; b&#7841;n nh&#7853;p v&#224;o vang s&#7889; (DSP).</div>
-  <div style='height:10px'></div>
-  <div class='row'>
-    <div><div class='lbl'>Nh&#7883;p (BPM)</div><input id='bpm' type='number' min='40' max='220' value='120'></div>
-    <button id='btnTap'>&#128070; B&#7844;M THEO NH&#7840;C</button>
+<div class="card">
+  <div class="step"><div class="num">♪</div><h2>Chỉnh Echo / Vang cho dễ</h2></div>
+  <div class="hint">Nhập nhịp bài hát (BPM) hoặc bấm theo nhạc vào nút <b>BẤM THEO NHẠC</b> khoảng 4–8 lần. Máy tính ra số DLY / RPT / RT60 để bạn nhập vào vang số (DSP) hoặc amply.</div>
+  <div style="height:10px"></div>
+  <div class="row">
+    <div><div class="lbl">Nhịp (BPM)</div><input id="bpm" type="number" min="40" max="220" value="120"></div>
+    <button id="btnTap">👆 BẤM THEO NHẠC</button>
   </div>
-  <div class='hint' id='tapT' style='margin-top:6px'>&nbsp;</div>
-  <div style='height:10px'></div>
-  <table id='echoT'></table>
+  <div class="hint" id="tapT" style="margin-top:6px">&nbsp;</div>
+  <div style="height:10px"></div>
+  <table id="echoT"></table>
 </div>
 
-<div class='card'>
-  <div class='step'><div class='num'>?</div><h2>Ch&#7895; n&#224;o l&#224; n&#250;m n&#224;o?</h2></div>
-  <details><summary>Amply karaoke (LOW / MID / HI / ECHO)</summary><div>&bull; <b>LOW</b> = ti&#7871;ng tr&#7847;m (80&ndash;160 Hz) &mdash; &#7863;m, d&#7847;y. Th&#7915;a th&#236; &#249;.<br>&bull; <b>MID</b> = ti&#7871;ng gi&#7919;a (500 Hz&ndash;1 kHz) &mdash; th&#226;n gi&#7885;ng. Th&#7915;a th&#236; nghe nh&#432; n&#243;i trong th&#249;ng.<br>&bull; <b>HI</b> = ti&#7871;ng cao (3&ndash;12 kHz) &mdash; &#273;&#7897; s&#225;ng, r&#245; ch&#7919;. Th&#7915;a th&#236; x&#233; tai v&#224; d&#7877; h&#250;.<br>&bull; <b>ECHO / DLY / RPT</b> = ti&#7871;ng vang l&#7863;p l&#7841;i. M&#7903; nhi&#7873;u r&#7845;t d&#7877; h&#250;.<br>&bull; H&#227;y xoay t&#7915;ng n&#250;m, m&#7895;i l&#7847;n m&#7897;t &#237;t (b&#7857;ng 1 &quot;kh&#7899;c&quot; nh&#7887;), r&#7891;i nghe l&#7841;i.</div></details>
-  <details><summary>Mixer / b&#224;n tr&#7897;n (HIGH / MID / LOW tr&#234;n t&#7915;ng &#273;&#432;&#7901;ng)</summary><div>M&#7895;i &#273;&#432;&#7901;ng (channel) c&#243; ri&#234;ng HIGH/MID/LOW. Ch&#7881;nh <b>&#273;&#432;&#7901;ng micro</b> khi gi&#7885;ng h&#225;t c&#243; v&#7845;n &#273;&#7873;, ch&#7881;nh <b>EQ t&#7893;ng (Master / DSP)</b> khi c&#7843; d&#224;n nghe sai. Vi&#7879;c c&#7847;n l&#224;m &#7903; tr&#234;n l&#224; cho EQ t&#7893;ng.</div></details>
-  <details><summary>Vang s&#7889; / DSP (Parametric EQ: Fc &ndash; Q &ndash; Gain)</summary><div>&bull; <b>Fc</b> = t&#7847;n s&#7889; c&#7847;n s&#7917;a (Hz).<br>&bull; <b>Q</b> = &#273;&#7897; h&#7865;p. Q nh&#7887; (1&ndash;2) s&#7917;a c&#7843; v&#249;ng r&#7897;ng; Q l&#7899;n (6&ndash;10) c&#7855;t &#273;&#250;ng 1 &#273;i&#7877;m &mdash; d&#249;ng khi ch&#7889;ng h&#250; ho&#7863;c c&#7855;t ph&#7887;ng b&#7883; d&#7897;i.<br>&bull; <b>Gain</b> = t&#259;ng (+) hay c&#7855;t (&minus;) bao nhi&#234;u dB.<br>&bull; Nguy&#234;n t&#7855;c v&#224;ng: <b>&#432;u ti&#234;n c&#7855;t ch&#7895; th&#7915;a thay v&#236; t&#259;ng ch&#7895; thi&#7871;u</b>. C&#7855;t an to&#224;n h&#417;n, &#237;t h&#250; h&#417;n.</div></details>
-  <details><summary>M&#7865;o ch&#7889;ng h&#250; kh&#244;ng c&#7847;n thi&#7871;t b&#7883;</summary><div>1. &#272;&#7913;ng h&#225;t <b>ph&#237;a sau</b> loa, kh&#244;ng ch&#7881;a micro v&#224;o loa.<br>2. H&#7841; <b>ECHO</b> v&#224; <b>HI</b> tr&#432;&#7899;c, sau &#273;&#243; m&#7899;i h&#7841; VOL micro.<br>3. Loa k&#233;o ra kh&#7887;i g&#243;c t&#432;&#7901;ng 30&ndash;50 cm, h&#432;&#7899;ng v&#7873; ph&#237;a ng&#432;&#7901;i nghe.<br>4. B&#7841;n c&#7847;m micro g&#7847;n mi&#7879;ng h&#417;n &rarr; kh&#244;ng c&#7847;n m&#7903; to &rarr; &#237;t h&#250; h&#417;n.<br>5. B&#7853;t trang n&#224;y trong l&#250;c h&#225;t &#273;&#7875; m&#225;y c&#7843;nh b&#225;o t&#7921; &#273;&#7897;ng khi s&#7855;p h&#250;.</div></details>
+<div class="card">
+  <div class="step"><div class="num">?</div><h2>Chỗ nào là núm nào?</h2></div>
+  <details><summary>Amply karaoke (LOW / MID / HI / ECHO)</summary><div>• <b>LOW</b> = tiếng trầm (80–160 Hz), tạo độ ấm và dày. Thừa thì bị ù.<br>• <b>MID</b> = tiếng giữa (500 Hz–1 kHz), là thân giọng. Thừa thì nghe như nói trong thùng.<br>• <b>HI</b> = tiếng cao (3–12 kHz), tạo độ sáng và rõ chữ. Thừa thì xé tai và rất dễ hú.<br>• <b>ECHO / DLY / RPT</b> = tiếng vang lặp lại. Mở nhiều rất dễ hú.<br>• Xoay từng núm một, mỗi lần một chút thôi, rồi nghe lại.</div></details>
+  <details><summary>Mixer / bàn trộn</summary><div>Mỗi đường (channel) có riêng HIGH / MID / LOW. Chỉnh <b>đường micro</b> khi giọng hát có vấn đề; chỉnh <b>EQ tổng (Master / DSP)</b> khi cả dàn nghe sai. Danh sách việc cần làm ở trên là dành cho EQ tổng.</div></details>
+  <details><summary>Vang số / DSP (Parametric EQ: Fc – Q – Gain)</summary><div>• <b>Fc</b> = tần số cần sửa (Hz).<br>• <b>Q</b> = độ hẹp. Q nhỏ (1–2) sửa cả vùng rộng; Q lớn (6–10) cắt đúng một điểm — dùng khi chống hú hoặc cắt chỗ phòng bị dội.<br>• <b>Gain</b> = tăng (+) hay cắt (−) bao nhiêu dB.<br>• Nguyên tắc vàng: <b>ưu tiên cắt chỗ thừa thay vì tăng chỗ thiếu</b>. Cắt an toàn hơn và ít hú hơn.</div></details>
+  <details><summary>Mẹo chống hú không cần thiết bị</summary><div>1. Đứng <b>phía sau</b> loa, không chĩa micro vào loa.<br>2. Hạ <b>ECHO</b> và <b>HI</b> trước, sau đó mới hạ VOL micro.<br>3. Kéo loa ra khỏi góc tường 30–50 cm, hướng về phía người nghe.<br>4. Cầm micro gần miệng hơn → không cần mở to → ít hú hơn.<br>5. Mở trang này trong lúc hát để máy tự cảnh báo khi sắp hú.</div></details>
 </div>
 
-<div class='card'>
-  <div class='foot'>
-    <b>L&#432;u &#253; th&#7853;t l&#242;ng:</b> micro c&#7911;a &#273;i&#7879;n tho&#7841;i/laptop kh&#244;ng ph&#7843;i micro &#273;o chu&#7849;n, n&#234;n con s&#7889; ch&#7881; mang t&#237;nh <b>t&#432;&#417;ng &#273;&#7889;i</b>. D&#249; v&#7853;y n&#243; r&#7845;t t&#7889;t &#273;&#7875; ph&#225;t hi&#7879;n &quot;&#7903; &#273;&#226;u &#273;ang th&#7915;a / thi&#7871;u&quot; v&#224; &#273;&#7875; so tr&#432;&#7899;c &ndash; sau khi ch&#7881;nh. Tai b&#7841;n v&#7851;n l&#224; ng&#432;&#7901;i quy&#7871;t &#273;&#7883;nh cu&#7889;i c&#249;ng: n&#7871;u nghe hay th&#236; c&#7913; gi&#7919; nguy&#234;n.<br>
-    C&#7847;n micro ho&#7841;t &#273;&#7897;ng th&#236; trang ph&#7843;i m&#7903; b&#7857;ng <b>https</b> (kh&#244;ng m&#7903; b&#7857;ng file tr&#234;n m&#225;y). N&#234;n d&#249;ng <b>Chrome</b> ho&#7863;c <b>Edge</b> &#273;&#7875; c&#243; gi&#7885;ng &#273;&#7885;c ti&#7871;ng Vi&#7879;t.
-  </div>
+<div class="card">
+  <div class="foot"><b>Nói thật lòng:</b> micro của điện thoại/laptop không phải micro đo chuẩn, nên con số chỉ mang tính <b>tương đối</b>. Dù vậy nó rất tốt để biết “chỗ nào đang thừa / thiếu” và để so trước – sau khi chỉnh. Tai bạn vẫn là người quyết định cuối cùng: nghe hay thì cứ giữ nguyên.<br>Muốn micro chạy được thì trang phải mở bằng <b>https</b> (không mở bằng file trên máy). Nên dùng <b>Chrome</b> hoặc <b>Edge</b> để có giọng đọc tiếng Việt.</div>
 </div>
 
 </div>
 <script>
 var ISO=[20,25,31.5,40,50,63,80,100,125,160,200,250,315,400,500,630,800,1000,1250,1600,2000,2500,3150,4000,5000,6300,8000,10000,12500,16000,20000];
 var ZI=[[0,5],[6,9],[10,13],[14,17],[18,21],[22,25],[26,28],[29,30]];
-var ZN=['Ti\u1ebfng tr\u1ea7m s\u00e2u (20\u201363 Hz)','Ti\u1ebfng tr\u1ea7m (80\u2013160 Hz)','Trung th\u1ea5p (200\u2013400 Hz)','Trung \u2013 th\u00e2n gi\u1ecdng (500 Hz\u20131 kHz)','Trung cao \u2013 r\u00f5 ch\u1eef (1.25\u20132.5 kHz)','Ti\u1ebfng cao (3\u20136.3 kHz)','Ti\u1ebfng r\u1ea5t cao (8\u201312.5 kHz)','Si\u00eau cao (16\u201320 kHz)'];
-var KNOB=['n\u00fam SUB / SUBWOOFER (ho\u1ea1c EQ 31\u201363 Hz)','n\u00fam LOW / BASS (ho\u1ea1c EQ 80\u2013160 Hz)','EQ 200\u2013400 Hz (m\u1ed9t s\u1ed1 amply ghi l\u00e0 MID th\u1ea5p)','n\u00fam MID (ho\u1ea1c EQ 500 Hz\u20131 kHz)','EQ 1.25\u20132.5 kHz (v\u00f9ng r\u00f5 ch\u1eef)','EQ 3\u20136.3 kHz (ho\u1ea1c n\u00fam HI c\u1ee7a amply karaoke)','n\u00fam HI / TREBLE (ho\u1ea1c EQ 8\u201312.5 kHz)','EQ 16\u201320 kHz (v\u00f9ng \u0111\u1ed9 m\u1edf)'];
-var MANY=['Ti\u1ebfng tr\u1ea7m l\u00f9ng b\u00f9ng, rung \u1ea7m \u1ea7m, nghe l\u00e2u b\u1ecb m\u1ec7t','Ti\u1ebfng b\u1ecb \u00f9, n\u1eb7ng \u0111\u1ea7u, l\u1eddi h\u00e1t b\u1ecb l\u1ea5p','Ti\u1ebfng \u0111\u1ee5c nh\u01b0 b\u1ecbt ch\u0103n, gi\u1ecdng b\u1ecb ngh\u1eb9t','Gi\u1ecdng nghe nh\u01b0 n\u00f3i trong th\u00f9ng, b\u1ecb d\u1ed9i','Gi\u1ecdng g\u1eaft v\u00e0 ch\u00f3e, nghe l\u00e2u b\u1ecb nh\u1ee9c tai','Ti\u1ebfng x\u00e9 r\u00e1t tai, ch\u1eef S/CH b\u1ecb r\u00edt, r\u1ea5t d\u1ec5 h\u00fa','Ti\u1ebfng leng keng, m\u1ecfng, d\u1ec5 h\u00fa micro','Nhi\u1ec1u ti\u1ebfng x\u00ec lao xao'];
-var FEW=['Thi\u1ebfu h\u01a1i tr\u1ea7m, nh\u1ea1c kh\u00f4ng c\u00f3 l\u1ef1c','Ti\u1ebfng m\u1ecfng, kh\u00f4, thi\u1ebfu \u1ea5m','Gi\u1ecdng b\u1ecb h\u1ee5t, thi\u1ebfu d\u00e0y','Gi\u1ecdng b\u1ecb l\u00f5m, nghe xa, ch\u00ecm d\u01b0\u1edbi nh\u1ea1c','Nghe kh\u00f4ng r\u00f5 ch\u1eef, l\u1eddi h\u00e1t b\u1ecb m\u1edd','Thi\u1ebfu \u0111\u1ed9 s\u00e1ng, ti\u1ebfng b\u1ecb t\u1ed1i','Thi\u1ebfu chi ti\u1ebft, ti\u1ebfng b\u00ed','Thi\u1ebfu \u0111\u1ed9 tho\u00e1ng, kh\u00f4ng gian h\u1eb9p'];
-var SHORT=['tr\u1ea7m s\u00e2u','ti\u1ebfng tr\u1ea7m','trung th\u1ea5p','trung','trung cao','ti\u1ebfng cao','ti\u1ebfng r\u1ea5t cao','si\u00eau cao'];
-var PRE=[
- {k:'karaoke',n:'Karaoke gia \u0111\u00ecnh',d:'Ph\u00f2ng nh\u1ecf, h\u00e1t nh\u1ea1c tr\u1ebb & bolero',t:[-3,2,-2,0,1,0,1,-1]},
- {k:'keo',n:'Loa k\u00e9o / di \u0111\u1ed9ng',d:'Loa k\u00e9o, loa bluetooth, s\u00e2n nh\u1ecf ngo\u00e0i tr\u1eddi',t:[-6,3,-3,1,2,1,0,-2]},
- {k:'hoitruong',n:'H\u1ed9i tr\u01b0\u1eddng / S\u00e2n kh\u1ea5u',d:'\u0110\u00e1m c\u01b0\u1edbi, s\u1ef1 ki\u1ec7n, ban nh\u1ea1c',t:[1,2,-2,0,1,1,1,0]},
- {k:'noi',n:'H\u1ecdp / Nh\u00e0 th\u1edd (gi\u1ecdng n\u00f3i)',d:'Ch\u1ee7 y\u1ebfu l\u00e0 n\u00f3i, c\u1ea7n r\u00f5 ch\u1eef',t:[-12,-5,-3,2,3,1,0,-3]},
- {k:'cafe',n:'Cafe / Nh\u1ea1c n\u1ec1n',d:'Nghe nh\u1eb9, m\u1edf l\u00e2u kh\u00f4ng m\u1ec7t',t:[-2,1,-1,0,0,0,1,1]}
-];
+var ZC=['#8b5cf6','#3b82f6','#06b6d4','#22c55e','#eab308','#f97316','#ef4444','#ec4899'];
+var ZN=['Tiếng trầm sâu (20–63 Hz)','Tiếng trầm (80–160 Hz)','Trung thấp (200–400 Hz)','Trung – thân giọng (500 Hz–1 kHz)','Trung cao – rõ chữ (1.25–2.5 kHz)','Tiếng cao (3–6.3 kHz)','Tiếng rất cao (8–12.5 kHz)','Siêu cao (16–20 kHz)'];
+var KNOB=['núm SUB / SUBWOOFER (hoặc EQ 31–63 Hz)','núm LOW / BASS (hoặc EQ 80–160 Hz)','EQ 200–400 Hz (một số amply ghi là MID thấp)','núm MID (hoặc EQ 500 Hz–1 kHz)','EQ 1.25–2.5 kHz (vùng rõ chữ)','EQ 3–6.3 kHz (hoặc núm HI của amply karaoke)','núm HI / TREBLE (hoặc EQ 8–12.5 kHz)','EQ 16–20 kHz (vùng độ mở)'];
+var MANY=['Tiếng trầm lùng bùng, rung ầm ầm, nghe lâu bị mệt','Tiếng bị ù, nặng đầu, lời hát bị lấp','Tiếng đục như bịt chăn, giọng bị nghẹt','Giọng nghe như nói trong thùng, bị dội','Giọng gắt và chóe, nghe lâu nhức tai','Tiếng xé rát tai, chữ S/CH bị rít, rất dễ hú','Tiếng leng keng, mỏng, dễ hú micro','Nhiều tiếng xì lao xao'];
+var FEW=['Thiếu hơi trầm, nhạc không có lực','Tiếng mỏng, khô, thiếu ấm','Giọng bị hụt, thiếu dày','Giọng bị lõm, nghe xa, chìm dưới nhạc','Nghe không rõ chữ, lời hát bị mờ','Thiếu độ sáng, tiếng bị tối','Thiếu chi tiết, tiếng bí','Thiếu độ thoáng, không gian hẹp'];
+var SHORT=['trầm sâu','tiếng trầm','trung thấp','trung','trung cao','tiếng cao','tiếng rất cao','siêu cao'];
+var PRE=[{n:'Karaoke gia đình',d:'Phòng nhỏ, hát nhạc trẻ và bolero',t:[-3,2,-2,0,1,0,1,-1]},{n:'Loa kéo / di động',d:'Loa kéo, loa bluetooth, sân nhỏ ngoài trời',t:[-6,3,-3,1,2,1,0,-2]},{n:'Hội trường / Sân khấu',d:'Đám cưới, sự kiện, ban nhạc',t:[1,2,-2,0,1,1,1,0]},{n:'Họp / Nhà thờ (giọng nói)',d:'Chủ yếu là nói, cần rõ chữ',t:[-12,-5,-3,2,3,1,0,-3]},{n:'Cafe / Nhạc nền',d:'Nghe nhẹ, mở lâu không mệt',t:[-2,1,-1,0,0,0,1,1]}];
 var pk=0,mode='pink';
-var ctx=null,an=null,stream=null,freq=null,bins=null,micOn=false;
+var ctx=null,an=null,freq=null,bins=null,micOn=false;
 var measuring=false,acc=null,accN=0,tEnd=0;
 var noiseNode=null,noiseGain=null,noiseOn=false;
-var prevScore=null,speakText='',lastFb=0,warnTo=0,lastD=null;
+var prevScore=null,speakText='',lastFb=0,warnTo=0;
 function el(i){return document.getElementById(i)}
 function fmtF(f){return f>=1000?(f/1000).toFixed(f>=10000?1:2)+' kHz':f+' Hz'}
 
 var ph='';
-for(var i=0;i<PRE.length;i++)ph+="<button class='pz"+(i===0?' on':'')+"' data-i='"+i+"'><b>"+PRE[i].n+"</b><span>"+PRE[i].d+"</span></button>";
+for(var i=0;i<PRE.length;i++)ph+='<button class="pz'+(i===0?' on':'')+'" data-i="'+i+'"><b>'+PRE[i].n+'</b><span>'+PRE[i].d+'</span></button>';
 el('presets').innerHTML=ph;
 el('presets').onclick=function(e){var b=e.target.closest('.pz');if(!b)return;pk=+b.getAttribute('data-i');var a=el('presets').querySelectorAll('.pz');for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b)};
-el('modes').onclick=function(e){var b=e.target.closest('.pz');if(!b)return;mode=b.getAttribute('data-m');var a=el('modes').querySelectorAll('.pz');for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b);el('pinkBox').style.display=(mode==='pink')?'block':'none';el('btnMeasure').textContent=(mode==='pink')?'\u23fa \u0110O (10 gi\u00e2y)':'\u23fa \u0110O (25 gi\u00e2y)'};
+el('modes').onclick=function(e){var b=e.target.closest('.pz');if(!b)return;mode=b.getAttribute('data-m');var a=el('modes').querySelectorAll('.pz');for(var j=0;j<a.length;j++)a[j].classList.toggle('on',a[j]===b);el('pinkBox').style.display=(mode==='pink')?'block':'none';el('btnMeasure').textContent=(mode==='pink')?'⏺ ĐO (10 giây)':'⏺ ĐO (25 giây)'};
 
 function ensureCtx(){if(!ctx)ctx=new (window.AudioContext||window.webkitAudioContext)();return ctx}
-async function startMic(){
+function startMic(){
  if(micOn)return;
- try{
-  ensureCtx();await ctx.resume();
-  stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}});
-  var s=ctx.createMediaStreamSource(stream);
+ ensureCtx();
+ ctx.resume().then(function(){
+  return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false,channelCount:1}});
+ }).then(function(st){
+  var s=ctx.createMediaStreamSource(st);
   an=ctx.createAnalyser();an.fftSize=16384;an.smoothingTimeConstant=0;an.minDecibels=-110;an.maxDecibels=0;
   s.connect(an);freq=new Float32Array(an.frequencyBinCount);buildBins();micOn=true;
-  el('btnMic').textContent='\u2705 MICRO \u0110ANG B\u1ead T';el('btnMic').className='big go';
+  el('btnMic').textContent='✅ MICRO ĐANG BẬT';el('btnMic').className='big go';
   el('btnMeasure').disabled=false;loop();
- }catch(e){el('lvlT').textContent='Kh\u00f4ng b\u1eadt \u0111\u01b0\u1ee3c micro: '+e.message+'. H\u00e3y cho ph\u00e9p quy\u1ec1n micro v\u00e0 m\u1edf trang b\u1eb1ng https.'}
+ }).catch(function(e){
+  el('lvlT').textContent='Không bật được micro: '+e.message+'. Hãy cho phép quyền micro và mở trang bằng https.';
+ });
 }
-function buildBins(){var sr=ctx.sampleRate,N=an.fftSize,df=sr/N,R=Math.pow(2,1/6),nb=an.frequencyBinCount;bins=[];for(var i=0;i<31;i++){var lo=Math.floor(ISO[i]/R/df),hi=Math.ceil(ISO[i]*R/df);if(lo<1)lo=1;if(hi>nb-1)hi=nb-1;if(hi<lo)hi=lo;bins.push([lo,hi])}}
+function buildBins(){var df=ctx.sampleRate/an.fftSize,R=Math.pow(2,1/6),nb=an.frequencyBinCount;bins=[];for(var i=0;i<31;i++){var lo=Math.floor(ISO[i]/R/df),hi=Math.ceil(ISO[i]*R/df);if(lo<1)lo=1;if(hi>nb-1)hi=nb-1;if(hi<lo)hi=lo;bins.push([lo,hi])}}
 function bandPow(){var o=[];for(var i=0;i<31;i++){var a=bins[i][0],b=bins[i][1],s=0,n=0;for(var k=a;k<=b;k++){s+=Math.pow(10,freq[k]/10);n++}o.push(n?s/n:1e-20)}return o}
 
 function loop(){
  requestAnimationFrame(loop);
  if(!an)return;
  an.getFloatFrequencyData(freq);
- var p=bandPow(),db=[],tot=0;
- for(var i=0;i<31;i++){db.push(10*Math.log10(p[i]+1e-20));tot+=p[i]}
+ var p=bandPow(),db=[],tot=0,i;
+ for(i=0;i<31;i++){db.push(10*Math.log10(p[i]+1e-20));tot+=p[i]}
  var bb=10*Math.log10(tot+1e-20);
  drawLive(db);
  el('lvl').style.width=Math.max(0,Math.min(100,(bb+85)/75*100))+'%';
- if(!measuring)el('lvlT').textContent=lvlText(bb);
  guard(db,bb);
  if(measuring){
-  for(var j=0;j<31;j++)acc[j]+=p[j];
+  for(i=0;i<31;i++)acc[i]+=p[i];
   accN++;
   var left=Math.ceil((tEnd-performance.now())/1000);
-  el('btnMeasure').textContent='\u23fa \u0110ANG \u0110O... '+Math.max(0,left)+'s';
-  el('lvlT').textContent='\u0110ang \u0111o, gi\u1eef nguy\u00ean \u00e2m l\u01b0\u1ee3ng v\u00e0 \u0111\u1ec3 y\u00ean m\u00e1y...';
+  el('btnMeasure').textContent='⏺ ĐANG ĐO... '+Math.max(0,left)+'s';
+  el('lvlT').textContent='Đang đo — giữ nguyên âm lượng và để yên máy...';
   if(performance.now()>=tEnd)finish();
+ }else{
+  el('lvlT').textContent=lvlText(bb);
  }
 }
 function lvlText(bb){
- if(bb<-72)return 'Ph\u00f2ng \u0111ang r\u1ea5t y\u00ean t\u0129nh ('+bb.toFixed(0)+' dB). H\u00e3y ph\u00e1t ti\u1ebfng qua d\u00e0n tr\u01b0\u1edbc khi \u0111o.';
- if(bb<-58)return 'C\u00f2n nh\u1ecf ('+bb.toFixed(0)+' dB). M\u1edf to h\u01a1n cho b\u1eb1ng l\u00fac d\u00f9ng th\u1eadt r\u1ed3i h\u00e3y \u0111o.';
- if(bb<-24)return 'M\u1ee9c \u0111ang t\u1ed1t ('+bb.toFixed(0)+' dB) \u2014 \u0111o \u0111\u01b0\u1ee3c.';
- return 'To qu\u00e1 ('+bb.toFixed(0)+' dB), d\u1ec5 b\u1ecb r\u00e8. H\u00e3y gi\u1ea3m m\u1ed9t ch\u00fat.';
+ var v=bb.toFixed(0);
+ if(bb<-72)return 'Đang rất yên tĩnh ('+v+' dB). Hãy phát tiếng qua dàn trước khi đo.';
+ if(bb<-58)return 'Còn nhỏ ('+v+' dB). Mở to bằng lúc dùng thật rồi hãy đo.';
+ if(bb<-24)return 'Mức đang tốt ('+v+' dB) — đo được.';
+ return 'To quá ('+v+' dB), dễ bị rè. Hãy giảm một chút.';
 }
 function guard(db,bb){
- if(bb<-70||measuring&&false)return;
- var best=-1,bp=0;
- for(var i=6;i<27;i++){
-  var arr=[];for(var k=Math.max(0,i-3);k<=Math.min(30,i+3);k++){if(Math.abs(k-i)>1)arr.push(db[k])}
+ if(bb<-70)return;
+ var best=-1,bp=0,i,k;
+ for(i=6;i<27;i++){
+  var arr=[];
+  for(k=Math.max(0,i-3);k<=Math.min(30,i+3);k++)if(Math.abs(k-i)>1)arr.push(db[k]);
   arr.sort(function(a,b){return a-b});
-  var med=arr[Math.floor(arr.length/2)],prom=db[i]-med;
+  var prom=db[i]-arr[Math.floor(arr.length/2)];
   if(db[i]>-76&&prom>bp){bp=prom;best=i}
  }
  if(best>=0&&bp>=13){
   var f=ISO[best],cut=-Math.min(12,Math.max(3,Math.round(bp*0.6*2)/2));
-  el('warnT').innerHTML='\u0110ang h\u00fa \u1edf kho\u1ea3ng <b>'+fmtF(f)+'</b>.<br>1) H\u1ea1 nh\u1ecf <b>ECHO</b> r\u1ed3i <b>VOL micro</b> m\u1ed9t ch\u00fat.<br>2) K\u00e9o micro ra xa loa, \u0111\u1eebng ch\u0129a v\u00e0o loa.<br>3) N\u1ebfu c\u00f3 DSP: c\u1eaft t\u1ea1i <b>Fc '+fmtF(f)+' \u00b7 Q = 8 \u00b7 '+cut+' dB</b>.';
+  el('warnT').innerHTML='Đang hú ở khoảng <b>'+fmtF(f)+'</b>.<br>1) Hạ nhỏ <b>ECHO</b> rồi <b>VOL micro</b> một chút.<br>2) Kéo micro ra xa loa, đừng chĩa vào loa.<br>3) Nếu có DSP: cắt tại <b>Fc '+fmtF(f)+' · Q = 8 · '+cut+' dB</b>.';
   el('warn').classList.add('on');
   var now=performance.now();
-  if(now-lastFb>5000){lastFb=now;say('\u0110ang h\u00fa r\u00edt \u1edf '+fmtF(f)+'. H\u00e3y gi\u1ea3m n\u00fam e cho ho\u1eb7c \u00e2m l\u01b0\u1ee3ng micro.')}
+  if(now-lastFb>5000){lastFb=now;say('Đang hú rít ở '+fmtF(f)+'. Hãy giảm núm ê cô hoặc âm lượng micro.')}
   clearTimeout(warnTo);warnTo=setTimeout(function(){el('warn').classList.remove('on')},6000);
  }
 }
@@ -251,43 +249,42 @@ function say(t){
   speechSynthesis.cancel();speechSynthesis.speak(u);
  }catch(e){}
 }
-if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){};
 
 function pinkBuf(){
  var len=Math.floor(ctx.sampleRate*4),b=ctx.createBuffer(1,len,ctx.sampleRate),d=b.getChannelData(0);
  var b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
  for(var i=0;i<len;i++){
   var w=Math.random()*2-1;
-  b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.96900*b2+w*0.1538520;
-  b3=0.86650*b3+w*0.3104856;b4=0.55000*b4+w*0.5329522;b5=-0.7616*b5-w*0.0168980;
+  b0=0.99886*b0+w*0.0555179;b1=0.99332*b1+w*0.0750759;b2=0.969*b2+w*0.153852;
+  b3=0.8665*b3+w*0.3104856;b4=0.55*b4+w*0.5329522;b5=-0.7616*b5-w*0.016898;
   d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11;b6=w*0.115926;
  }
  return b;
 }
-async function toggleNoise(){
- ensureCtx();await ctx.resume();
- if(noiseOn){try{noiseNode.stop()}catch(e){}noiseNode=null;noiseOn=false;el('btnNoise').textContent='\u25b6\ufe0f PH\u00c1T TI\u1ebeNG R\u00c8 CHU\u1ea8N';el('btnNoise').className='';return}
+function toggleNoise(){
+ ensureCtx();
+ ctx.resume();
+ if(noiseOn){try{noiseNode.stop()}catch(e){}noiseNode=null;noiseOn=false;el('btnNoise').textContent='▶️ PHÁT TIẾNG RÈ CHUẨN';el('btnNoise').className='';return}
  noiseNode=ctx.createBufferSource();noiseNode.buffer=pinkBuf();noiseNode.loop=true;
  noiseGain=ctx.createGain();noiseGain.gain.value=(+el('nv').value)/100;
  noiseNode.connect(noiseGain);noiseGain.connect(ctx.destination);noiseNode.start();
- noiseOn=true;el('btnNoise').textContent='\u23f9 D\u1eaeNG TI\u1ebeNG R\u00c8';el('btnNoise').className='big rec';
+ noiseOn=true;el('btnNoise').textContent='⏹ DỪNG TIẾNG RÈ';el('btnNoise').className='big rec';
 }
-el('nv').oninput=function(){el('nvV').textContent=el('nv').value;if(noiseGain)noiseGain.gain.value=(+el('nv').value)/100};
 
 function measure(){
- if(!micOn)return;
+ if(!micOn||measuring)return;
  acc=[];for(var i=0;i<31;i++)acc.push(0);
  accN=0;measuring=true;tEnd=performance.now()+(mode==='pink'?10000:25000);
  el('btnMeasure').className='big rec';
 }
 function finish(){
- measuring=false;el('btnMeasure').className='big';el('btnMeasure').textContent='\u23fa \u0110O L\u1ea0I';
+ measuring=false;el('btnMeasure').className='big';el('btnMeasure').textContent='⏺ ĐO LẠI';
  var db=[];for(var i=0;i<31;i++)db.push(10*Math.log10(acc[i]/Math.max(1,accN)+1e-20));
  analyze(db);
  el('result').scrollIntoView({behavior:'smooth',block:'start'});
 }
 function analyze(db){
- var t=PRE[pk].t,tb=[],i,z;
+ var t=PRE[pk].t,tb=[],i,z,k;
  for(i=0;i<31;i++)tb.push(0);
  for(z=0;z<8;z++)for(i=ZI[z][0];i<=ZI[z][1];i++)tb[i]=t[z];
  var err=[];for(i=0;i<31;i++)err.push(db[i]-tb[i]);
@@ -296,61 +293,122 @@ function analyze(db){
  var zd=[];for(z=0;z<8;z++){var a=0,c=0;for(i=ZI[z][0];i<=ZI[z][1];i++){a+=d[i];c++}zd.push(a/c)}
  var res=[];
  for(i=3;i<=15;i++){
-  var arr=[];for(var k=Math.max(0,i-3);k<=Math.min(30,i+3);k++)if(k!==i)arr.push(d[k]);
+  var arr=[];for(k=Math.max(0,i-3);k<=Math.min(30,i+3);k++)if(k!==i)arr.push(d[k]);
   arr.sort(function(x,y){return x-y});
-  var med=arr[Math.floor(arr.length/2)];
-  if(d[i]-med>=6)res.push({f:ISO[i],ex:d[i]-med});
+  var ex=d[i]-arr[Math.floor(arr.length/2)];
+  if(ex>=6)res.push({f:ISO[i],ex:ex});
  }
  var pen=0;for(z=0;z<8;z++)pen+=Math.min(20,Math.max(0,(Math.abs(zd[z])-2)*3.2));
  pen+=res.length*6;
  render(Math.max(0,Math.min(100,Math.round(100-pen))),zd,res,d);
 }
 function render(score,zd,res,d){
- el('result').style.display='block';lastD=d;
+ el('result').style.display='block';
  var col=score>=80?'#22c55e':score>=60?'#a3e635':score>=40?'#eab308':'#ef4444';
- var st=score>=80?'\u0110ang r\u1ea5t t\u1ed1t \u2014 c\u1ee9 h\u00e1t th\u00f4i':score>=60?'T\u1ea1m \u1ed5n \u2014 ch\u1ec9nh th\u00eam s\u1ebd hay h\u01a1n':score>=40?'C\u1ea7n ch\u1ec9nh':'C\u1ea7n ch\u1ec9nh ngay';
- el('gauge').style.background=col;el('gauge').innerHTML='<b>'+score+'</b><span>\u0110I\u1ec2M</span>';
+ var st=score>=80?'Đang rất tốt — cứ hát thôi':score>=60?'Tạm ổn — chỉnh thêm sẽ hay hơn':score>=40?'Cần chỉnh':'Cần chỉnh ngay';
+ el('gauge').style.background=col;
+ el('gauge').innerHTML='<b>'+score+'</b><span>ĐIỂM</span>';
  var cmp='';
- if(prevScore!==null){var dd=score-prevScore;cmp=' \u00b7 L\u1ea7n \u0111o tr\u01b0\u1edbc: '+prevScore+' \u0111i\u1ec3m \u2192 '+(dd>0?('<b style="color:#22c55e">t\u1ed1t h\u01a1n +'+dd+'</b>'):dd<0?('<b style="color:#ef4444">k\u00e9m h\u01a1n '+dd+'</b>'):'kh\u00f4ng \u0111\u1ed5i')}
- el('status').innerHTML="<b style='font-size:19px'>"+st+"</b><div class='hint' style='margin-top:4px'>D\u00e0n: "+PRE[pk].n+cmp+'</div>';
+ if(prevScore!==null){var dd=score-prevScore;cmp=' · Lần đo trước: '+prevScore+' điểm → '+(dd>0?'<b style="color:#22c55e">tốt hơn +'+dd+'</b>':dd<0?'<b style="color:#ef4444">kém hơn '+dd+'</b>':'không đổi')}
+ el('status').innerHTML='<b style="font-size:19px">'+st+'</b><div class="hint" style="margin-top:4px">Dàn: '+PRE[pk].n+cmp+'</div>';
  prevScore=score;
- var items=[],z;
+ var items=[],z,i;
  for(z=0;z<8;z++)if(Math.abs(zd[z])>=2)items.push({z:z,v:zd[z]});
  items.sort(function(a,b){return Math.abs(b.v)-Math.abs(a.v)});
  var h='',sp=[];
- if(!items.length&&!res.length){h="<li style='border-left-color:#22c55e'><b>Kh\u00f4ng c\u1ea7n ch\u1ec9nh g\u00ec th\u00eam \ud83c\udf89</b><small>C\u00e1c d\u1ea3i \u00e2m \u0111ang c\u00e2n so v\u1edbi ki\u1ec3u d\u00e0n b\u1ea1n ch\u1ecdn. Gi\u1eef nguy\u00ean nh\u01b0 v\u1eady.</small></li>";sp.push('D\u00e0n c\u1ee7a b\u1ea1n \u0111ang c\u00e2n, kh\u00f4ng c\u1ea7n ch\u1ec9nh th\u00eam')}
- for(var i=0;i<items.length&&i<5;i++){
+ if(!items.length&&!res.length){h='<li style="border-left-color:#22c55e"><b>Không cần chỉnh gì thêm 🎉</b><small>Các dải âm đang cân so với kiểu dàn bạn chọn. Giữ nguyên như vậy.</small></li>';sp.push('Dàn của bạn đang cân, không cần chỉnh thêm')}
+ for(i=0;i<items.length&&i<5;i++){
   var zz=items[i].z,v=items[i].v,amt=Math.min(8,Math.round(Math.abs(v)*2)/2),up=v<0;
   var c=Math.abs(v)>=5?'#ef4444':Math.abs(v)>=3?'#eab308':'#38bdf8';
-  h+="<li style='border-left-color:"+c+"'><b>"+(i+1)+'. '+ZN[zz]+"</b><small>Nghe th\u1ea5y: "+(up?FEW[zz]:MANY[zz])+"</small><div class='do'>\u279c "+(up?'T\u0102NG':'GI\u1ea2M')+' kho\u1ea3ng <b>'+amt+' dB</b> \u1edf '+KNOB[zz]+'</div></li>';
-  sp.push((up?'T\u0103ng':'Gi\u1ea3m')+' kho\u1ea3ng '+amt+' \u0111\u00ea xi ben \u1edf '+SHORT[zz]);
+  h+='<li style="border-left-color:'+c+'"><b>'+(i+1)+'. '+ZN[zz]+'</b><small>Nghe thấy: '+(up?FEW[zz]:MANY[zz])+'</small><div class="do">➜ '+(up?'TĂNG':'GIẢM')+' khoảng <b>'+amt+' dB</b> ở '+KNOB[zz]+'</div></li>';
+  sp.push((up?'Tăng':'Giảm')+' khoảng '+amt+' đê xi ben ở '+SHORT[zz]);
  }
- for(var r=0;r<res.length&&r<3;r++){
-  var f=res[r].f,cut=-Math.min(9,Math.max(3,Math.round(res[r].ex*0.6)));
-  h+="<li style='border-left-color:#a855f7'><b>Ph\u00f2ng b\u1ecb d\u1ed9i (\u00f9 t\u1eebng ch\u1ed7) \u1edf "+fmtF(f)+"</b><small>M\u1ed9t t\u1ea7n s\u1ed1 tr\u1ea7m b\u1ecb ph\u00f2ng c\u1ed9ng h\u01b0\u1edfng, l\u00e0m ti\u1ebfng \u00f9 l\u00ean nghe r\u1ea5t kh\u00f3 ch\u1ecbu.</small><div class='do'>\u279c C\u1eaft h\u1ebdp t\u1ea1i DSP/EQ: <b>Fc "+fmtF(f)+' \u00b7 Q = 6 \u00b7 '+cut+' dB</b>. Kh\u00f4ng c\u00f3 DSP th\u00ec k\u00e9o loa xa t\u01b0\u1eddng/g\u00f3c ph\u00f2ng 30\u201350 cm.</div></li>';
+ for(i=0;i<res.length&&i<3;i++){
+  var f=res[i].f,cut=-Math.min(9,Math.max(3,Math.round(res[i].ex*0.6)));
+  h+='<li style="border-left-color:#a855f7"><b>Phòng bị dội (ù từng chỗ) ở '+fmtF(f)+'</b><small>Một tần số trầm bị phòng cộng hưởng, làm tiếng ù lên nghe rất khó chịu.</small><div class="do">➜ Cắt hẹp tại DSP/EQ: <b>Fc '+fmtF(f)+' · Q = 6 · '+cut+' dB</b>. Không có DSP thì kéo loa xa tường/góc phòng 30–50 cm.</div></li>';
  }
  el('todo').innerHTML=h;
- speakText='\u0110i\u1ec3m '+score+' tr\u00ean 100. '+st+'. '+sp.join('. ')+'.';
+ speakText='Điểm '+score+' trên 100. '+st+'. '+sp.join('. ')+'.';
  drawRes(d);
 }
-function cw(c){var r=c.getBoundingClientRect(),dp=window.devicePixelRatio||1;c.width=Math.max(320,r.width*dp);c.height=r.height*dp;var g=c.getContext('2d');g.setTransform(dp,0,0,dp,0,0);return {g:g,w:r.width,h:r.height}}
-function drawLive(db){
- var c=el('live');if(!c)return;var o=cw(c),g=o.g,w=o.w,h=o.h;
- g.clearRect(0,0,w,h);
- var bw=w/31;
- for(var i=0;i<31;i++){
-  var v=Math.max(0,Math.min(1,(db[i]+90)/80)),bh=v*(h-16);
-  var z=0;for(var j=0;j<8;j++)if(i>=ZI[j][0]&&i<=ZI[j][1])z=j;
-  g.fillStyle=['#8b5cf6','#3b82f6','#06b6d4','#22c55e','#eab308','#f97316','#ef4444','#ec4899'][z];
-  g.fillRect(i*bw+1,h-14-bh,bw-2,bh);
- }
+function cw(c){var r=c.getBoundingClientRect(),dp=window.devicePixelRatio||1;c.width=Math.max(320,r.width*dp);c.height=r.height*dp;var g=c.getContext('2d');g.setTransform(dp,0,0,dp,0,0);return{g:g,w:r.width||320,h:r.height}}
+function labels(g,bw,h){
  g.fillStyle='#8ea3bf';g.font='9px system-ui';g.textAlign='center';
  var lab=[0,6,10,14,18,22,26,30];
  for(var k=0;k<lab.length;k++){var ii=lab[k];g.fillText(ISO[ii]>=1000?(ISO[ii]/1000)+'k':''+ISO[ii],ii*bw+bw/2,h-3)}
 }
-function drawRes(d){
- var c=el('res');if(!c)return;var o=cw(c),g=o.g,w=o.w,h=o.h,mid=(h-16)/2+4;
+function drawLive(db){
+ var c=el('live');if(!c)return;
+ var o=cw(c),g=o.g,w=o.w,h=o.h,bw=w/31,i,j;
  g.clearRect(0,0,w,h);
- g.strokeStyle='#22314a';g.lineWidth=1;
- for(var yy=-12;yy<=12;yy+=6){var y=mid-yy*((h-30)/2)/14;g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();g.fillStyle='#5c7192';g.font='9px system-ui';g.textAlign='left';g.fillText((yy>0?'+':'')+yy,2,y-2)}
- g.strokeStyle='#7ee2a8';g.beginPath();g.
+ for(i=0;i<31;i++){
+  var v=Math.max(0,Math.min(1,(db[i]+90)/80)),bh=v*(h-18),z=0;
+  for(j=0;j<8;j++)if(i>=ZI[j][0]&&i<=ZI[j][1])z=j;
+  g.fillStyle=ZC[z];
+  g.fillRect(i*bw+1,h-14-bh,bw-2,bh);
+ }
+ labels(g,bw,h);
+}
+function drawRes(d){
+ var c=el('res');if(!c)return;
+ var o=cw(c),g=o.g,w=o.w,h=o.h,top=8,bot=h-16,mid=(top+bot)/2,sc=(bot-top)/2/14,bw=w/31,v,y,i;
+ g.clearRect(0,0,w,h);
+ g.strokeStyle='#22314a';g.lineWidth=1;g.font='9px system-ui';g.textAlign='left';
+ for(v=-12;v<=12;v+=6){
+  y=mid-v*sc;
+  g.beginPath();g.moveTo(0,y);g.lineTo(w,y);g.stroke();
+  g.fillStyle='#5c7192';g.fillText((v>0?'+':'')+v,2,y-2);
+ }
+ for(i=0;i<31;i++){
+  var val=Math.max(-14,Math.min(14,d[i])),y2=mid-val*sc;
+  var av=Math.abs(val);
+  g.fillStyle=av<2?'#22c55e':av<5?'#eab308':'#ef4444';
+  g.fillRect(i*bw+1.5,Math.min(mid,y2),bw-3,Math.max(1,Math.abs(mid-y2)));
+ }
+ g.strokeStyle='#7ee2a8';g.lineWidth=1.5;
+ g.beginPath();g.moveTo(0,mid);g.lineTo(w,mid);g.stroke();
+ labels(g,bw,h);
+}
+
+var EP=[{n:'Nhạc trẻ / sôi động',dly:'1/8',rpt:'2–3',rt:'1.0–1.2 s',lo:'120 Hz',hi:'8 kHz'},{n:'Bolero / trữ tình',dly:'1/4',rpt:'3–4',rt:'1.6–1.9 s',lo:'100 Hz',hi:'7 kHz'},{n:'Karaoke gia đình',dly:'1/8',rpt:'3',rt:'1.2–1.4 s',lo:'120 Hz',hi:'8 kHz'},{n:'Nói chuyện / MC / nhà thờ',dly:'off',rpt:'1',rt:'0.4–0.6 s',lo:'150 Hz',hi:'6 kHz'}];
+function calcEcho(){
+ var bpm=+el('bpm').value||120,q=60000/bpm,e=q/2;
+ var h='<tr><th>Kiểu hát</th><th>DLY (Delay)</th><th>RPT (Lặp)</th><th>Vang RT60</th><th>LO cut</th><th>HI cut</th></tr>';
+ for(var i=0;i<EP.length;i++){
+  var ms=EP[i].dly==='1/4'?Math.round(q)+' ms':EP[i].dly==='1/8'?Math.round(e)+' ms':'Tắt hoặc 60–100 ms';
+  h+='<tr><td>'+EP[i].n+'</td><td><b>'+ms+'</b></td><td>'+EP[i].rpt+'</td><td>'+EP[i].rt+'</td><td>'+EP[i].lo+'</td><td>'+EP[i].hi+'</td></tr>';
+ }
+ el('echoT').innerHTML=h;
+}
+var taps=[];
+function tap(){
+ var now=performance.now();
+ if(taps.length&&now-taps[taps.length-1]>2500)taps=[];
+ taps.push(now);
+ if(taps.length>8)taps.shift();
+ if(taps.length>=2){
+  var d=(taps[taps.length-1]-taps[0])/(taps.length-1);
+  var bpm=Math.round(60000/d);
+  if(bpm>=40&&bpm<=220){el('bpm').value=bpm;calcEcho();el('tapT').textContent='Đã bấm '+taps.length+' lần → '+bpm+' BPM (1/4 nhịp = '+Math.round(60000/bpm)+' ms)'}
+ }else{el('tapT').textContent='Bấm tiếp theo nhạc...'}
+}
+
+el('btnMic').onclick=startMic;
+el('btnMeasure').onclick=measure;
+el('btnNoise').onclick=toggleNoise;
+el('btnSay').onclick=function(){if(speakText)say(speakText)};
+el('btnPng').onclick=function(){
+ try{
+  var a=document.createElement('a');
+  a.download='soundtune-ketqua.png';
+  a.href=el('res').toDataURL('image/png');
+  a.click();
+ }catch(e){}
+};
+el('bpm').oninput=calcEcho;
+el('btnTap').onclick=tap;
+window.addEventListener('resize',function(){if(!micOn)return});
+calcEcho();
+</script>
+</body>
+</html>
