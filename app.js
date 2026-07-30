@@ -19,7 +19,7 @@ var bands=new Float32Array(NB),disp=new Float32Array(NB),peaks=new Float32Array(
 var running=false,frozen=false;
 var snaps=[null,null,null,null,null,null],snapOn=[true,true,true,true,true,true];
 var cur={x:-1,y:-1,on:false};
-var det={f:0,cnt:0,last:0,lastF:0};
+var det={f:0,cnt:0,last:0,lastF:0,t0:0,hit:0,hits:0,pmin:99,pmax:-99,k0:0};
 var simOsc=null,simGain=null,simFreq=0;
 var viVoice=null;
 for(var i=0;i<NB;i++){disp[i]=DBMIN;peaks[i]=DBMIN;bands[i]=DBMIN;}
@@ -90,7 +90,40 @@ function analyze(){
   return totP>0 ? 10*Math.log10(totP) : DBMIN;
 }
 
-/* ================= PHAT HIEN HU RIT ================= */
+/* ================= PHAT HIEN HU RIT =================
+   Mot dinh nhon CHI duoc coi la hu khi thoa CA BA dieu kien:
+     1. Nhon hon nen pho >= nguong bao (prominence)
+     2. KHONG phai mot bac trong chuoi hai am cua giong noi / nhac (voiceComb)
+     3. Giu nguyen tan so VA nguyen do lon lien tuc >= 0.85 s (che do "nhan manh hu": 0.45 s)
+   Tieng noi binh thuong luon vi pham dieu 2 (co day hai am cach nhau dung F0)
+   va dieu 3 (moi am tiet chi keo dai 0.1 - 0.3 s roi doi cao do).
+   Hu rit that thi nguoc lai: mot vach don doc, dung yen, khong tat. */
+
+function binPeak(f){
+  var n=analyser.frequencyBinCount, c=Math.round(f/binHz);
+  if(c<3||c>n-4) return -300;
+  var m=-300;
+  for(var i=c-2;i<=c+2;i++){ if(buf[i]>m) m=buf[i] }
+  return m;
+}
+
+/* Giong noi (va moi nhac cu co cao do) phat ra mot DAY vach cach nhau dung
+   mot khoang F0 = tan so day thanh, thuong 80 - 400 Hz. Neu canh dinh dang xet
+   con thay hai vach anh em cach deu nhau thi day la tieng noi/hat chu khong phai hu. */
+function voiceComb(f,pv,med){
+  var lim=Math.max(med+8,pv-13), k, F0, dn, up;
+  for(k=2;k<=12;k++){
+    F0=f/k;
+    if(F0<80) break;
+    if(F0>400) continue;
+    dn=f-F0; up=f+F0;
+    if(dn<60) continue;
+    if(binPeak(dn)>=lim && binPeak(up)>=lim) return true;
+    if(binPeak(dn)>=lim && dn-F0>=60 && binPeak(dn-F0)>=lim) return true;
+  }
+  return false;
+}
+
 function detect(){
   var n=analyser.frequencyBinCount;
   var a=Math.max(3,Math.round(70/binHz)), z=Math.min(n-3,Math.round(9000/binHz));
@@ -111,19 +144,47 @@ function detect(){
   while(ri<hi && buf[ri]>th) ri++;
   var bw=Math.max(binHz*2,(ri-li)*binHz);
   var Q=Math.min(48,Math.max(2,f/bw));
-  return {f:f,peak:pv,prom:prom,bw:bw,Q:Q};
+  return {f:f,peak:pv,prom:prom,bw:bw,Q:Q,voice:voiceComb(f,pv,med)};
 }
 
 function fmtF(f){ return f>=1000 ? (f/1000).toFixed(2)+" kHz" : Math.round(f)+" Hz"; }
 function bwOct(Q){ return (2/Math.LN2)*Math.log(1/(2*Q)+Math.sqrt(1/(4*Q*Q)+1)); }
 
+function trkStart(now,d){
+  det.f=d.f; det.t0=now; det.hit=now; det.hits=1;
+  det.pmin=d.prom; det.pmax=d.prom; det.k0=d.peak;
+}
+
 function handleDetect(spl){
-  var d=detect();
+  var d=detect(), now=Date.now();
   var thr=parseFloat($("thr").value);
-  if(!d || d.prom<thr){ det.cnt=Math.max(0,det.cnt-1); if(det.cnt===0) det.f=0; return }
-  if(det.f>0 && Math.abs(d.f-det.f)/det.f<0.07) det.cnt++; else { det.f=d.f; det.cnt=1; }
-  det.f=d.f;
-  if(det.cnt<cfg.hold) return;
+  var need=($("speed").value==="fb")?450:850;
+
+  /* Khong co dinh, chua du nhon, hoac dung la tieng noi -> quen di */
+  if(!d || d.prom<thr || d.voice){
+    if(det.f>0 && now-det.hit>260){ det.f=0; det.hits=0 }
+    return;
+  }
+
+  /* Cung mot tan so (lech < 3 %) va khong bi dut qua 260 ms thi tinh la ke tiep */
+  if(det.f>0 && Math.abs(d.f-det.f)/det.f<0.03 && now-det.hit<=260){
+    det.hits++; det.hit=now;
+    if(d.prom<det.pmin) det.pmin=d.prom;
+    if(d.prom>det.pmax) det.pmax=d.prom;
+    det.f=det.f+(d.f-det.f)*0.25;
+  }else{
+    trkStart(now,d);
+    return;
+  }
+
+  var dur=now-det.t0;
+  var loud=(d.prom>=thr+10 && dur>=350 && det.hits>=4);
+  if(dur<need && !loud) return;
+  if(det.hits<6 && !loud) return;
+  if(det.pmax-det.pmin>10) return;   /* len xuong that thuong nhu tieng noi */
+  if(d.peak<det.k0-5) return;        /* dang tat dan, hu that thi khong tat */
+
+  d.dur=dur/1000;
   showAlert(d,spl);
 }
 
@@ -133,7 +194,7 @@ function showAlert(d,spl){
   var Q=Math.round(d.Q*10)/10;
   $("aF").textContent=fmtF(d.f);
   $("aSev").textContent="MỨC ĐỘ: "+sev;
-  $("aP").textContent="+"+d.prom.toFixed(1)+" dB so với nền phổ";
+  $("aP").textContent="+"+d.prom.toFixed(1)+" dB so với nền phổ"+(d.dur?" · đứng yên "+d.dur.toFixed(1)+" s":"");
   $("aSpl").textContent=spl.toFixed(1)+" dB SPL (ước tính)";
   $("aFc").textContent=(d.f>=1000?(d.f/1000).toFixed(3)+" kHz":d.f.toFixed(1)+" Hz");
   $("aBw").textContent=Math.round(d.bw)+" Hz ("+bwOct(Q).toFixed(2)+" oct)";
