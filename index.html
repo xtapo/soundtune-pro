@@ -209,7 +209,7 @@ td b{color:var(--acc)}
       <thead><tr><th>Thông số vang số DSP</th><th>Giá trị đề nghị</th></tr></thead>
       <tbody id="revBody"></tbody>
     </table>
-    <div class="hint">Nhấn TAP TEMPO theo phách nhạc từ 4 lần trở lên để máy tự tính BPM. Echo Delay lấy theo nốt (1/4 = 1 phách). RT60 = thời gian âm vang tắt 60 dB, tính theo số phách bạn chọn.</div>
+    <div class="hint">Nhấn TAP TEMPO theo phách nhạc từ 4 lần trở lên để máy tự tính BPM. Echo Delay lấy theo nốt (1/4 = 1 phách). RT60 ở bảng này là <b>vang của máy DSP</b> tính theo nhịp — muốn biết <b>vang thật của phòng</b>, sang tab “Đo phòng thật”.</div>
   </div>
 
   <div id="p3" class="panel">
@@ -240,15 +240,18 @@ td b{color:var(--acc)}
       <thead><tr><th>Bước</th><th>Việc cần làm</th></tr></thead>
       <tbody>
         <tr><td>1</td><td>Đặt mic đo ở vị trí người nghe, cao 1.2–1.6 m, hướng thẳng vào loa. Tắt mọi hiệu ứng echo/reverb trên DSP.</td></tr>
-        <tr><td>2</td><td>Phát nhạc hồng (pink noise) hoặc nhạc quen tai ở mức ~85 dB. Chọn tốc độ đo <b>Chậm</b> để xem đáp tuyến tổng thể, lưu vào <b>DSP 1</b>.</td></tr>
-        <tr><td>3</td><td>Chỉnh EQ phòng: SUB/BASS không vượt MID quá 6 dB; hõm 200–400 Hz làm tiếng đục; 2–4 kHz quá cao gây gắt.</td></tr>
-        <tr><td>4</td><td>Dò hú: chọn <b>Nhấn mạnh hú</b>, mở dần volume mic. Khi có cảnh báo, dùng đúng thông số Fc / Q / Gain trong bảng để cắt notch trên DSP.</td></tr>
-        <tr><td>5</td><td>Sau mỗi lần cắt, lưu snapshot mới (DSP 2, 3…) để so sánh và tránh cắt trùng lặp làm mất tiếng.</td></tr>
-        <tr><td>6</td><td>Cuối cùng dùng TempoSync để set Echo Delay và RT60 đúng nhịp bài hát. Xong thì bấm <b>Xuất báo cáo</b> ở thanh Hồ sơ để lưu hồ sơ cho khách.</td></tr>
+        <tr><td>2</td><td>Kiểm tra <b>pha / đảo cực</b> hai loa và <b>căn trễ</b> sub–loa full ở tab “Đo phòng thật” — sai cực là lỗi làm mất bass nhiều nhất và sửa chỉ mất 10 giây.</td></tr>
+        <tr><td>3</td><td>Đo <b>RT60 thật của phòng</b> (cùng tab) để biết phòng vang 0.6 s hay 2.5 s, từ đó quyết định lượng echo và mức cắt trung.</td></tr>
+        <tr><td>4</td><td>Phát nhạc hồng (pink noise) hoặc nhạc quen tai ở mức ~85 dB. Chọn tốc độ đo <b>Chậm</b> để xem đáp tuyến tổng thể, lưu vào <b>DSP 1</b>.</td></tr>
+        <tr><td>5</td><td>Chỉnh EQ phòng: SUB/BASS không vượt MID quá 6 dB; hõm 200–400 Hz làm tiếng đục; 2–4 kHz quá cao gây gắt.</td></tr>
+        <tr><td>6</td><td>Ring-out: chọn <b>Nhấn mạnh hú</b>, mở dần volume mic. Máy báo vàng “sắp hú” thì dừng tay; khi có cảnh báo đỏ thì cắt đúng Fc / Q / Gain trong bảng. Cuối buổi xem tab <b>Dự đoán hú · Ring-out</b> để lấy 5 điểm cắt cố định.</td></tr>
+        <tr><td>7</td><td>Sau mỗi lần cắt, lưu snapshot mới (DSP 2, 3…) để so sánh và tránh cắt trùng lặp làm mất tiếng.</td></tr>
+        <tr><td>8</td><td>Cuối cùng dùng TempoSync để set Echo Delay và RT60 đúng nhịp bài hát. Xong thì bấm <b>Xuất báo cáo</b> ở thanh Hồ sơ để lưu hồ sơ cho khách.</td></tr>
       </tbody>
     </table>
     <div class="hint">Lưu ý: dBFS là mức số của trình duyệt, không phải SPL tuyệt đối. Hãy dùng thanh “Hiệu chuẩn SPL” để khớp với máy đo SPL cầm tay (hoặc app đo SPL) rồi mới đọc giá trị SPL.</div>
     <div class="hint"><b>Đánh dấu tần số:</b> chạm giữ khoảng nửa giây (hoặc bấm đúp chuột) lên đồ thị để ghim một tần số cần theo dõi; nhãn hồng sẽ hiện mức dB tại đó liên tục trong lúc bạn vặn núm. Nút <b>Khoá đỉnh hiện tại</b> ghim ngay băng tần đang cao nhất. Bấm vào nhãn hồng ở dưới đồ thị để xoá.</div>
+    <div class="hint"><b>Ba phép đo thật</b> (tab “Đo phòng thật”) đều cần bật mic và giữ phòng im lặng: máy tự phát tín hiệu ra loa rồi thu lại để tính. Đo pha và đo trễ phải giữ micro đúng một vị trí cho cả hai lần đo, và chỉ mở một loa mỗi lần.</div>
   </div>
 
   <a class="swBig" href="easy.html">🙂 CHUYỂN SANG CHẾ ĐỘ DỄ<small>Chỉ dẫn từng bước bằng lời thường, cho người không chuyên về âm thanh</small></a>
@@ -272,5 +275,7 @@ td b{color:var(--acc)}
 
 <script src="app.js"></script>
 <script src="extras.js"></script>
+<script src="lab.js"></script>
+<script src="ring.js"></script>
 </body>
 </html>
