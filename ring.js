@@ -1,4 +1,4 @@
-/* SoundTune Pro - ring.js : 9. Cảnh báo trước khi hú · 10. Bộ nhớ hú tích luỹ (ring-out) */
+/* SoundTune Pro - ring.js : 9. Cảnh báo trước khi hú · 10. Bộ nhừ hú tích luỹ (ring-out) */
 (function(){
 "use strict";
 if(!document.getElementById("rta")) return;
@@ -36,7 +36,7 @@ var html=
 '<div class="fld"><label>Độ nhạy</label><select id="pSens"><option value="lo">Thấp (ít báo)</option><option value="md" selected>Vừa</option><option value="hi">Cao (báo sớm nhất)</option></select></div>'+
 '<label class="chk"><input type="checkbox" id="pVoice" checked> Đọc cảnh báo sớm</label></div>'+
 '<div id="riseBox">Chưa có dải nào dâng đáng chú ý.</div></div>'+
-'<div class="sec"><h4>10. Bộ nhớ hú cả buổi (ring-out)</h4>'+
+'<div class="sec"><h4>10. Bộ nhừ hú cả buổi (ring-out)</h4>'+
 '<div class="lead">Mọi lần hú thật và mọi cảnh báo sớm đều được ghi và gộp theo tần số. Cuối buổi máy đưa ra <b>5 điểm cần cắt cố định</b> trên DSP. Dữ liệu lưu theo từng hồ sơ dàn.</div>'+
 '<div class="cnt"><div>Hú thật: <b id="cReal">0</b></div><div>Cảnh báo sớm: <b id="cPre">0</b></div><div>Điểm tần số: <b id="cPts">0</b></div><div>Mở từ: <b id="cStart">—</b></div></div>'+
 '<div id="topBox">Chưa ghi được điểm hú nào.</div>'+
@@ -44,7 +44,7 @@ var html=
 '<div class="ctl" style="margin-top:11px"><button id="rgCopy">📋 Sao chép bảng cắt</button><button id="rgNote">🗂 Ghi vào hồ sơ</button><button id="rgNew">↺ Bắt đầu buổi mới</button></div>'+
 '<div id="rgMsg" style="margin-top:8px;font-size:12.5px;min-height:17px;color:#86efac"></div>'+
 '<details style="margin-top:12px"><summary>Quy trình ring-out chuẩn (làm 1 lần cho mỗi dàn)</summary>'+
-'<div class="lead" style="margin-top:8px">1. Đặt micro đúng chỗ và đúng hướng sẽ hát.<br>2. Tắt vang và echo, để EQ phẳng.<br>3. Tăng master mic <b>từ từ</b> tới khi nghe hú nhẹ.<br>4. Máy báo tần số → cắt đúng tần số đó 3 – 6 dB, Q hẹp.<br>5. Tăng tiếp → hú tần số khác → cắt tiếp, lặp 4 – 6 lần.<br>6. Cắt đủ rồi <b>hạ master mic 3 – 6 dB</b> so với điểm hú — đó là mức an toàn.<br>7. Bật lại vang/echo, ghi bảng cắt vào hồ sơ.<br>Đừng cắt quá 6 điểm và đừng sâu hơn 10 dB, tiếng sẽ rỗng.</div></details></div>';
+'<div class="lead" style="margin-top:8px">1. Đặt micro đúng chỗ và đúng hướng sẽ hát.<br>2. Tắt vang và echo, để EQ phẳng.<br>3. Tăng master mic <b>từ từ</b> tới khi nghe hú nhẹ.<br>4. Máy báo tần số → cắt đúng tần số đó 3 – 6 dB, Q hếp.<br>5. Tăng tiếp → hú tần số khác → cắt tiếp, lặp 4 – 6 lần.<br>6. Cắt đủ rồi <b>hạ master mic 3 – 6 dB</b> so với điểm hú — đó là mức an toàn.<br>7. Bật lại vang/echo, ghi bảng cắt vào hồ sơ.<br>Đừng cắt quá 6 điểm và đừng sâu hơn 10 dB, tiếng sẽ rỗng.</div></details></div>';
 
 var tabs=document.querySelector(".tabs");
 var btn=document.createElement("button");
@@ -178,7 +178,7 @@ function warn(o,thr){
   var f=ISO[o.b], eta=o.s>0.5?Math.max(0.5,(thr-o.p)/o.s):0;
   E("preT1").textContent="⚠ SẮP HÚ Ở "+fmtF(f);
   E("preT2").innerHTML="Dải này đang dâng <b>"+o.s.toFixed(1)+" dB/giây</b>, đã nhô +"+o.p.toFixed(1)+" dB so với nền."+
-    (eta?" Còn khoảng <b>"+eta.toFixed(1)+" giây</b> nủa là hú nếu giữ nguyên.":"")+
+    (eta?" Còn khoảng <b>"+eta.toFixed(1)+" giây</b> nữa là hú nếu giữ nguyên.":"")+
     "<br><b>Làm ngay:</b> đừng tăng thêm micro; hạ master mic 1 – 2 dB hoặc cắt "+fmtF(f)+" chừng 3 dB, Q 8 – 12.";
   pw.className="on";
   clearTimeout(warn.t);
@@ -256,7 +256,7 @@ E("rgNote").onclick=function(){
   msg("Đã ghi vào ghi chú hồ sơ — sẽ nằm trong báo cáo PNG.");
 };
 E("rgNew").onclick=function(){
-  if(S.items.length && !confirm("Xoá bộ nhớ hú của hồ sơ này để bắt đầu buổi mới?")) return;
+  if(S.items.length && !confirm("Xoá bộ nhừ hú của hồ sơ này để bắt đầu buổi mới?")) return;
   S={items:[],real:0,pre:0,start:Date.now()};
   save(); render(); msg("Đã bắt đầu buổi mới.");
 };
