@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>SoundTune Pro - RTA &amp; Feedback Detector</title>
+<meta name="theme-color" content="#0d1521">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SoundTune">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
 :root{
   --bg:#080b11; --pnl:#111a26; --pnl2:#0c1420; --line:#1e2b3d;
@@ -176,7 +183,7 @@ td b{color:var(--acc)}
       <button id="btnPng" class="primary">Xuất ảnh PNG</button>
       <button id="btnClrAll" class="danger small">Xoá tất cả snapshot</button>
     </div>
-    <div class="hint">Chụp đáp tuyến ở mỗi lần thay đổi (góc loa, vị trí sub, EQ phòng…) rồi bật/tắt hiển thị để chồng lớp so sánh. Đường snapshot vẽ nét mảnh theo màu của từng ô DSP.</div>
+    <div class="hint">Chụp đáp tuyến ở mỗi lần thay đổi (góc loa, vị trí sub, EQ phòng…) rồi bật/tắt hiển thị để chồng lớp so sánh. Đường snapshot vẽ nét mảnh theo màu của từng ô DSP. Snapshot được lưu vào hồ sơ địa điểm, mở lại trang vẫn còn.</div>
   </div>
 
   <div id="p2" class="panel">
@@ -237,10 +244,11 @@ td b{color:var(--acc)}
         <tr><td>3</td><td>Chỉnh EQ phòng: SUB/BASS không vượt MID quá 6 dB; hõm 200–400 Hz làm tiếng đục; 2–4 kHz quá cao gây gắt.</td></tr>
         <tr><td>4</td><td>Dò hú: chọn <b>Nhấn mạnh hú</b>, mở dần volume mic. Khi có cảnh báo, dùng đúng thông số Fc / Q / Gain trong bảng để cắt notch trên DSP.</td></tr>
         <tr><td>5</td><td>Sau mỗi lần cắt, lưu snapshot mới (DSP 2, 3…) để so sánh và tránh cắt trùng lặp làm mất tiếng.</td></tr>
-        <tr><td>6</td><td>Cuối cùng dùng TempoSync để set Echo Delay và RT60 đúng nhịp bài hát.</td></tr>
+        <tr><td>6</td><td>Cuối cùng dùng TempoSync để set Echo Delay và RT60 đúng nhịp bài hát. Xong thì bấm <b>Xuất báo cáo</b> ở thanh Hồ sơ để lưu hồ sơ cho khách.</td></tr>
       </tbody>
     </table>
     <div class="hint">Lưu ý: dBFS là mức số của trình duyệt, không phải SPL tuyệt đối. Hãy dùng thanh “Hiệu chuẩn SPL” để khớp với máy đo SPL cầm tay (hoặc app đo SPL) rồi mới đọc giá trị SPL.</div>
+    <div class="hint"><b>Đánh dấu tần số:</b> chạm giữ khoảng nửa giây (hoặc bấm đúp chuột) lên đồ thị để ghim một tần số cần theo dõi; nhãn hồng sẽ hiện mức dB tại đó liên tục trong lúc bạn vặn núm. Nút <b>Khoá đỉnh hiện tại</b> ghim ngay băng tần đang cao nhất. Bấm vào nhãn hồng ở dưới đồ thị để xoá.</div>
   </div>
 
   <a class="swBig" href="easy.html">🙂 CHUYỂN SANG CHẾ ĐỘ DỄ<small>Chỉ dẫn từng bước bằng lời thường, cho người không chuyên về âm thanh</small></a>
@@ -263,5 +271,6 @@ td b{color:var(--acc)}
 </div>
 
 <script src="app.js"></script>
+<script src="extras.js"></script>
 </body>
 </html>
