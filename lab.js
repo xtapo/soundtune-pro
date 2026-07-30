@@ -178,16 +178,40 @@ function pinkBuffer(secs){
   return b;
 }
 
+/* Tìm thời điểm tắt tiếng.
+
+   Cách cũ (chọn đoạn 60 ms tụt mạnh nhất) SAI: đường tắt của phòng gần như là
+   một đường thẳng đều theo dB, nên mọi điểm trong cả đoạn đang tụt đều tụt
+   bằng nhau. Chỉ cần nhiễu 0,2 dB là bắt nhầm chỗ, rồi decay() lấy mức chuẩn
+   ngay trong đoạn đang tụt, làm RT60 đo ra ngắn hơn thật (phòng 0,6 s báo
+   0,37 s — sai 38 %).
+
+   Cách mới: lấy mức ổn định lúc còn phát (plat) và nền im sau khi tắt (flo)
+   theo phân vị, rồi dò ngược từ cuối về đầu để tìm khung cuối cùng còn nằm ở
+   mức ổn định — đó chính là mép tắt tiếng. Bắt buộc 300 ms sau đó phải tụt
+   thật sự, để không bắt nhầm một tiếng động lạ giữa đuôi vang. */
 function findCut(e){
-  var best=-1,bv=0,i,j,a,b2,c;
-  for(i=12;i<e.db.length-12;i++){
-    if(e.t[i]<0.9) continue;
-    a=0; for(j=i-12;j<i;j++) a+=e.db[j]; a/=12;
-    b2=0; for(j=i;j<i+12;j++) b2+=e.db[j]; b2/=12;
-    c=b2-a;
-    if(c<bv){ bv=c; best=i }
+  var db=e.db, t=e.t, n=db.length, i, j;
+  if(n<80) return {i:-1,drop:0};
+  var srt=[]; for(i=0;i<n;i++) srt.push(db[i]);
+  srt.sort(function(a,b){return b-a});
+  var plat=srt[Math.floor(n*0.10)];
+  var flo=srt[n-1-Math.floor(n*0.05)];
+  var span=plat-flo;
+  if(span<6) return {i:-1,drop:span};
+  var need=Math.min(6,span*0.5);
+  var dt=(t[1]-t[0])||0.005;
+  var K=8, F=Math.max(8,Math.round(0.3/dt));
+  for(i=n-1-F;i>=12;i--){
+    if(t[i]<0.9) break;
+    if(db[i]<plat-1.5) continue;
+    var ok=1;
+    for(j=i+1;j<=i+K;j++){ if(db[j]>plat-1.5){ ok=0; break } }
+    if(!ok) continue;
+    if(db[i+F]>plat-need) continue;
+    return {i:Math.min(n-1,i+1), drop:span};
   }
-  return {i:best,drop:-bv};
+  return {i:-1,drop:span};
 }
 
 function decay(e,ci){
@@ -273,7 +297,7 @@ function runRT(){
 
 function showRT(out,cut){
   busy(0); note("");
-  var h='<div style="margin-bottom:8px">Kết quả đo lúc '+new Date().toLocaleTimeString()+' · biên độ tắt nhận được <b>'+cut.drop.toFixed(1)+' dB</b></div>';
+  var h='<div style="margin-bottom:8px">Kết quả đo lúc '+new Date().toLocaleTimeString()+' · dải động thu được <b>'+cut.drop.toFixed(1)+' dB</b></div>';
   h+='<table><thead><tr><th>Dải</th><th>RT60</th><th>Cách tính</th><th>Dải động</th></tr></thead><tbody>';
   var mid=[],bass=[],i;
   for(i=0;i<out.length;i++){
