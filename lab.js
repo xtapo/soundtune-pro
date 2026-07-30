@@ -56,7 +56,7 @@ var html=
 
 '<div class="sec">'+
 '<h4>8. Căn trễ (delay) giữa sub – loa full, loa chính – loa phụ</h4>'+
-'<div class="lead">Mỗi nguồn phát một xung ngắn, máy dùng <b>tương quan chéo</b> tìm đúng thời điểm xung tối, rồi so hai lần đo để ra độ lệch thời gian. Đo từng nguồn một, micro <b>không được dịch chỗ</b> giữa hai lần đo.</div>'+
+'<div class="lead">Mỗi nguồn phát một xung ngắn, máy dùng <b>tương quan chéo</b> tìm đúng thời điểm xung tới, rồi so hai lần đo để ra độ lệch thời gian. Đo từng nguồn một, micro <b>không được dịch chỗ</b> giữa hai lần đo.</div>'+
 '<div class="ctl"><div class="fld"><label>Loại nguồn</label><select id="dlB"><option value="full">Loa full / loa phụ (xung dải rộng)</option><option value="sub">Sub (xung 80 Hz)</option></select></div></div>'+
 '<div class="g2">'+
 '<div class="slot"><input type="text" id="dlNA" value="Loa chính (full)"><button id="dlA">Đo nguồn này</button><div class="v" id="dlVA">Chưa đo</div></div>'+
@@ -289,7 +289,7 @@ function showRT(out,cut){
   h+="</tbody></table>";
 
   if(!mid.length){
-    h+='<div style="margin-top:9px" class="bad">Chưa đủ dữ liệu ở dải giỏa để kết luận. Tăng mức phát rồi đo lại.</div>';
+    h+='<div style="margin-top:9px" class="bad">Chưa đủ dữ liệu ở dải giữa để kết luận. Tăng mức phát rồi đo lại.</div>';
     E("rtRes").className="res on"; E("rtRes").innerHTML=h; return;
   }
   var m=0; for(i=0;i<mid.length;i++) m+=mid[i]; m/=mid.length;
@@ -307,15 +307,15 @@ function showRT(out,cut){
     advice.push("Giảm vang máy còn <b>"+Math.max(0.5,1.5-m).toFixed(2)+" s</b>, repeat 25 – 30 %, HF damping 6.3 kHz.");
     advice.push("Cắt <b>250 – 400 Hz khoảng 2 – 3 dB</b> (Q ≈ 1.2) để lời thoát ra khỏi tiếng dọi phòng.");
     advice.push("Thêm rèm, thảm hoặc người/ghế để hút bớt.");
-  }else{ verdict="Vang quá nhiều (hội trường / nhà thứ trống)"; cls="bad";
+  }else{ verdict="Vang quá nhiều (hội trường / nhà thờ trống)"; cls="bad";
     advice.push("Vang máy đặt <b>tối đa 0.5 – 0.7 s</b>, repeat ≤ 20 %, hoặc tắt hẳn vang và chỉ dùng echo ngắn.");
     advice.push("Cắt <b>200 – 400 Hz từ 3 – 5 dB</b>, HPF micro 120 Hz, đặt loa cao và chĩa xuống người nghe để bớt đánh vào tường.");
-    advice.push("Ưu tiên loa nhiều điểm cóng suất nhỏ hơn là một cặp loa to.");
+    advice.push("Ưu tiên loa nhiều điểm công suất nhỏ hơn là một cặp loa to.");
   }
   if(bass.length && bm>m*1.45){
-    advice.push("Dải trầm vang <b>"+bm.toFixed(2)+" s</b>, lâu hơn dải giỏa nhiều — phòng bị ù bass. Kéo loa/sub ra khỏi góc 30 – 50 cm và cắt 80 – 160 Hz 2 – 4 dB.");
+    advice.push("Dải trầm vang <b>"+bm.toFixed(2)+" s</b>, lâu hơn dải giữa nhiều — phòng bị ù bass. Kéo loa/sub ra khỏi góc 30 – 50 cm và cắt 80 – 160 Hz 2 – 4 dB.");
   }
-  h+='<div style="margin-top:11px">RT60 dải giỏa (500 Hz – 2 kHz): <span class="big">'+m.toFixed(2)+' s</span></div>';
+  h+='<div style="margin-top:11px">RT60 dải giữa (500 Hz – 2 kHz): <span class="big">'+m.toFixed(2)+' s</span></div>';
   h+='<div class="'+cls+'" style="margin-top:2px">'+verdict+"</div>";
   h+='<div style="margin-top:8px">Việc cần làm:<ul style="margin:6px 0 0;padding-left:18px">';
   for(i=0;i<advice.length;i++) h+="<li>"+advice[i]+"</li>";
@@ -325,7 +325,7 @@ function showRT(out,cut){
 }
 E("rtGo").onclick=runRT;
 
-/* ================= 7. PHA / ĐẢO CỠC ================= */
+/* ================= 7. PHA / ĐẢO CỰC ================= */
 function pulseBuffer(kind){
   var sr=ac.sampleRate, f=(kind==="sub")?70:250;
   var len=Math.max(8,Math.round(sr*0.5/f)), b=ac.createBuffer(1,len,sr), d=b.getChannelData(0);
@@ -525,7 +525,7 @@ E("labNote").onclick=function(){
     var s=[];
     for(i=0;i<LAST.rt.length;i++){ var o=LAST.rt[i]; if(o.r) s.push((o.f>=1000?(o.f/1000)+"k":o.f)+": "+o.r.rt.toFixed(2)+"s") }
     L.push("RT60 "+s.join(" | "));
-    L.push("RT60 dải giỏa: "+LAST.rtMid.toFixed(2)+" s");
+    L.push("RT60 dải giữa: "+LAST.rtMid.toFixed(2)+" s");
   }
   if(LAST.pol.A&&LAST.pol.B){
     L.push("Pha: "+LAST.pol.A.name+" ("+(LAST.pol.A.sign>0?"+":"-")+") vs "+LAST.pol.B.name+" ("+(LAST.pol.B.sign>0?"+":"-")+") → "+(LAST.pol.A.sign===LAST.pol.B.sign?"cùng cực":"NGƯỢC CỰC, phải đảo dây 1 loa"));
