@@ -1,0 +1,26 @@
+name: Unit test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Kiem tra cu phap tat ca file JS
+        run: |
+          for f in app.js easy.js extras.js lab.js ring.js dsp.js sw.js; do
+            echo "--- node --check $f"
+            node --check "$f"
+          done
+
+      - name: Unit test DSP
+        run: node --test test/

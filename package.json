@@ -1,0 +1,10 @@
+{
+  "name": "soundtune-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "May do am thanh RTA / phat hien hu rit / do phong that - unit test cho phan DSP",
+  "scripts": {
+    "test": "node --test test/",
+    "lint": "node --check app.js && node --check easy.js && node --check extras.js && node --check lab.js && node --check ring.js && node --check dsp.js && node --check sw.js"
+  }
+}
