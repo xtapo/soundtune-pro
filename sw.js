@@ -1,5 +1,5 @@
 /* SoundTune - service worker */
-var VER="soundtune-v4";
+var VER="soundtune-v5";
 var CORE=["./","index.html","easy.html","app.js","easy.js","extras.js","lab.js","ring.js","manifest.webmanifest","icon.svg","icon-maskable.svg"];
 
 self.addEventListener("install",function(e){
