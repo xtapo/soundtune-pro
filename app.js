@@ -19,7 +19,7 @@ var bands=new Float32Array(NB),disp=new Float32Array(NB),peaks=new Float32Array(
 var running=false,frozen=false;
 var snaps=[null,null,null,null,null,null],snapOn=[true,true,true,true,true,true];
 var cur={x:-1,y:-1,on:false};
-var det={f:0,cnt:0,last:0,lastF:0,t0:0,hit:0,hits:0,pmin:99,pmax:-99,k0:0};
+var det={f:0,cnt:0,last:0,lastF:0,t0:0,hit:0,hits:0,pmin:99,pmax:-99,k0:0,hist:[]};
 var simOsc=null,simGain=null,simFreq=0;
 var viVoice=null;
 for(var i=0;i<NB;i++){disp[i]=DBMIN;peaks[i]=DBMIN;bands[i]=DBMIN;}
@@ -90,14 +90,66 @@ function analyze(){
   return totP>0 ? 10*Math.log10(totP) : DBMIN;
 }
 
-/* ================= PHAT HIEN HU RIT =================
-   Mot dinh nhon CHI duoc coi la hu khi thoa CA BA dieu kien:
-     1. Nhon hon nen pho >= nguong bao (prominence)
-     2. KHONG phai mot bac trong chuoi hai am cua giong noi / nhac (voiceComb)
-     3. Giu nguyen tan so VA nguyen do lon lien tuc >= 0.85 s (che do "nhan manh hu": 0.45 s)
-   Tieng noi binh thuong luon vi pham dieu 2 (co day hai am cach nhau dung F0)
-   va dieu 3 (moi am tiet chi keo dai 0.1 - 0.3 s roi doi cao do).
-   Hu rit that thi nguoc lai: mot vach don doc, dung yen, khong tat. */
+/* ================= PHAT HIEN HU RIT (v2) =================
+   Ban cu bao SAI tan so vi no lay DINH TO NHAT trong dai 70 Hz - 9 kHz.
+   Tieng bass, tieng trong, tieng dan luon to hon vach hu nen may bao ra tan so
+   cua nhac chu khong phai tan so hu. Khi hu bi meo tieng thi hoa am bac 2 - 3
+   con co the to hon ca tan so goc.
+
+   Ban nay sua 5 diem:
+     1. Xep hang dinh theo DO NHO so voi nen pho (prominence) chu khong theo do
+        to. Nen pho tinh bang TRUNG VI tren luoi 1/6 octave nen mot vach hu don
+        doc khong the tu keo nen cua chinh no len.
+     2. Lui ve tan so goc: neu dinh dang xet dung bang m lan (m = 2..5) mot dinh
+        thap hon ma dinh do cung con manh thi lay dinh thap hon.
+     3. Noi suy parabol CHI chay khi that su la dinh (dao ham bac hai am) va gioi
+        han lech toi da nua bin.
+     4. Khoa tan so bang TRUNG VI cua 15 khung gan nhat, dung sai bam 1.5 %, nen
+        so bao dung yen thay vi troi dan.
+     5. Mo rong dai quet len 60 Hz - 12 kHz de bat ca hu tren loa horn.
+
+   Ba dieu kien de ket luan la hu van giu nguyen:
+     a. Nhon hon nen pho >= nguong bao (prominence)
+     b. KHONG phai mot bac trong chuoi hai am cua giong noi / nhac (voiceComb)
+     c. Giu nguyen tan so VA nguyen do lon lien tuc >= 0.85 s (che do "nhan manh
+        hu": 0.45 s) */
+
+var FMIN=60, FMAX=12000, FSTEP=Math.pow(2,1/6), FLOG=Math.log(FSTEP);
+var FLOORF=[], FLOORV=[];
+for(var _ff=40;_ff<=16000;_ff*=FSTEP) FLOORF.push(_ff);
+
+function medOf(a){
+  if(!a.length) return 0;
+  a.sort(function(x,y){return x-y});
+  var m=a.length>>1;
+  return (a.length%2) ? a[m] : (a[m-1]+a[m])/2;
+}
+
+/* Nen pho theo luoi 1/6 octave. Dung TRUNG VI chu khong dung trung binh: mot
+   vach hu don doc chi chiem vai bin nen khong keo noi trung vi cua ca o len. */
+function calcFloor(n){
+  FLOORV.length=0;
+  for(var g=0;g<FLOORF.length;g++){
+    var fc=FLOORF[g];
+    var i0=Math.max(1,Math.round(fc/FSTEP/binHz));
+    var i1=Math.min(n-1,Math.round(fc*FSTEP/binHz));
+    if(i1<i0) i1=i0;
+    var st=Math.max(1,Math.floor((i1-i0+1)/48)), v=[];
+    for(var i=i0;i<=i1;i+=st){ if(buf[i]>-190) v.push(buf[i]) }
+    FLOORV.push(v.length?medOf(v):-120);
+  }
+}
+
+/* Noi suy nen pho tai tan so bat ky - tra ve trong thoi gian hang so */
+function floorAt(f){
+  var m=FLOORV.length;
+  if(!m) return -120;
+  var g=Math.log(f/FLOORF[0])/FLOG;
+  if(g<=0) return FLOORV[0];
+  if(g>=m-1) return FLOORV[m-1];
+  var g0=Math.floor(g);
+  return FLOORV[g0]+(FLOORV[g0+1]-FLOORV[g0])*(g-g0);
+}
 
 function binPeak(f){
   var n=analyser.frequencyBinCount, c=Math.round(f/binHz);
@@ -124,27 +176,67 @@ function voiceComb(f,pv,med){
   return false;
 }
 
+/* Tim trong danh sach ung vien mot dinh nam quanh tan so f */
+function peakNear(top,f,tol){
+  var bi=-1,bp=-999;
+  for(var k=0;k<top.length;k++){
+    if(Math.abs(top[k].f-f)/f<=tol && top[k].prom>bp){ bp=top[k].prom; bi=k }
+  }
+  return bi;
+}
+
 function detect(){
+  if(!analyser||!buf) return null;
   var n=analyser.frequencyBinCount;
-  var a=Math.max(3,Math.round(70/binHz)), z=Math.min(n-3,Math.round(9000/binHz));
-  var pi=a,pv=-300;
-  for(var i=a;i<=z;i++){ if(buf[i]>pv){pv=buf[i];pi=i;} }
-  if(pv<-78) return null;
-  var w=Math.max(8,Math.round(pi*0.55));
-  var lo=Math.max(1,pi-w), hi=Math.min(n-1,pi+w), arr=[];
-  for(var i=lo;i<=hi;i++) arr.push(buf[i]);
-  arr.sort(function(x,y){return x-y});
-  var med=arr[Math.floor(arr.length/2)];
-  var prom=pv-med;
-  var l=buf[pi-1],c=buf[pi],rr=buf[pi+1],dd=(l-2*c+rr),off=0;
-  if(dd!==0){ off=0.5*(l-rr)/dd; if(!isFinite(off)||Math.abs(off)>1) off=0; }
+  if(!n) return null;
+  calcFloor(n);
+
+  var a=Math.max(3,Math.round(FMIN/binHz)), z=Math.min(n-3,Math.round(FMAX/binHz));
+  var top=[], i, v, fl, pr;
+
+  /* B1 - gom moi dinh NHON, cham diem bang do nho so voi nen pho */
+  for(i=a;i<=z;i++){
+    v=buf[i];
+    if(v<-95) continue;
+    if(v<buf[i-1]||v<buf[i+1]||v<=buf[i-2]||v<=buf[i+2]) continue;
+    fl=floorAt(i*binHz); pr=v-fl;
+    if(pr<4) continue;
+    top.push({i:i,f:i*binHz,v:v,prom:pr});
+  }
+  if(!top.length) return null;
+  top.sort(function(x,y){return y.prom-x.prom});
+  if(top.length>8) top.length=8;
+
+  /* B2 - lui ve tan so goc neu dinh dang xet chi la hoa am */
+  var best=top[0], pass, m, k, moved, fs;
+  for(pass=0;pass<3;pass++){
+    moved=0;
+    for(m=2;m<=5;m++){
+      fs=best.f/m;
+      if(fs<FMIN) break;
+      k=peakNear(top,fs,0.02);
+      if(k>=0 && top[k]!==best && top[k].prom>=Math.max(4,best.prom*0.35)){ best=top[k]; moved=1; break }
+    }
+    if(!moved) break;
+  }
+
+  /* B3 - noi suy parabol chi khi that su la dinh */
+  var pi=best.i, l=buf[pi-1], c=buf[pi], r=buf[pi+1], dd=l-2*c+r, off=0;
+  if(dd<0){ off=0.5*(l-r)/dd; if(!isFinite(off)||Math.abs(off)>0.5) off=0 }
   var f=(pi+off)*binHz;
-  var th=pv-3,li=pi,ri=pi;
+
+  /* B4 - do rong -3 dB, Q va danh sach nghi ngo de doi chieu */
+  var base=floorAt(f), prom=best.v-base;
+  var th=best.v-3, li=pi, ri=pi;
+  var lo=Math.max(1,pi-600), hi=Math.min(n-2,pi+600);
   while(li>lo && buf[li]>th) li--;
   while(ri<hi && buf[ri]>th) ri++;
   var bw=Math.max(binHz*2,(ri-li)*binHz);
-  var Q=Math.min(48,Math.max(2,f/bw));
-  return {f:f,peak:pv,prom:prom,bw:bw,Q:Q,voice:voiceComb(f,pv,med)};
+  var Q=Math.min(60,Math.max(2,f/bw));
+  var alts=[];
+  for(i=0;i<top.length&&alts.length<3;i++) alts.push({f:top[i].f,prom:top[i].prom});
+
+  return {f:f,peak:best.v,prom:prom,bw:bw,Q:Q,alts:alts,voice:voiceComb(f,best.v,base)};
 }
 
 function fmtF(f){ return f>=1000 ? (f/1000).toFixed(2)+" kHz" : Math.round(f)+" Hz"; }
@@ -153,6 +245,19 @@ function bwOct(Q){ return (2/Math.LN2)*Math.log(1/(2*Q)+Math.sqrt(1/(4*Q*Q)+1));
 function trkStart(now,d){
   det.f=d.f; det.t0=now; det.hit=now; det.hits=1;
   det.pmin=d.prom; det.pmax=d.prom; det.k0=d.peak;
+  det.hist=[d.f];
+}
+
+function showTop(d){
+  var tp=$("fbTop");
+  if(!tp) return;
+  if(d&&d.alts&&d.alts.length){
+    var s=[],i;
+    for(i=0;i<d.alts.length;i++) s.push(fmtF(d.alts[i].f)+" +"+d.alts[i].prom.toFixed(0));
+    tp.textContent=s.join("  ·  ");
+  }else{
+    tp.textContent="—";
+  }
 }
 
 function handleDetect(spl){
@@ -160,18 +265,23 @@ function handleDetect(spl){
   var thr=parseFloat($("thr").value);
   var need=($("speed").value==="fb")?450:850;
 
+  showTop(d);
+
   /* Khong co dinh, chua du nhon, hoac dung la tieng noi -> quen di */
   if(!d || d.prom<thr || d.voice){
-    if(det.f>0 && now-det.hit>260){ det.f=0; det.hits=0 }
+    if(det.f>0 && now-det.hit>260){ det.f=0; det.hits=0; det.hist.length=0 }
     return;
   }
 
-  /* Cung mot tan so (lech < 3 %) va khong bi dut qua 260 ms thi tinh la ke tiep */
-  if(det.f>0 && Math.abs(d.f-det.f)/det.f<0.03 && now-det.hit<=260){
+  /* Cung mot tan so (lech < 1.5 %) va khong bi dut qua 260 ms thi tinh la ke tiep.
+     Khoa tan so bang trung vi 15 khung gan nhat: mot khung nhieu khong keo lech duoc. */
+  if(det.f>0 && Math.abs(d.f-det.f)/det.f<0.015 && now-det.hit<=260){
     det.hits++; det.hit=now;
     if(d.prom<det.pmin) det.pmin=d.prom;
     if(d.prom>det.pmax) det.pmax=d.prom;
-    det.f=det.f+(d.f-det.f)*0.25;
+    det.hist.push(d.f);
+    if(det.hist.length>15) det.hist.shift();
+    det.f=medOf(det.hist.slice());
   }else{
     trkStart(now,d);
     return;
@@ -184,6 +294,7 @@ function handleDetect(spl){
   if(det.pmax-det.pmin>10) return;   /* len xuong that thuong nhu tieng noi */
   if(d.peak<det.k0-5) return;        /* dang tat dan, hu that thi khong tat */
 
+  d.f=det.f;                         /* bao ra tan so DA KHOA, khong phai khung le */
   d.dur=dur/1000;
   showAlert(d,spl);
 }
@@ -597,11 +708,23 @@ $("speed").onchange=function(){
     $("srate").textContent=Math.round(ac.sampleRate/1000)+" kHz · FFT "+analyser.fftSize;
   }
   for(var b=0;b<NB;b++){ peaks[b]=DBMIN; pAge[b]=0 }
+  det.f=0; det.hits=0; det.hist.length=0;
 };
 var tabs=document.querySelectorAll(".tabs button");
 for(var i=0;i<tabs.length;i++) tabs[i].onclick=function(){
   for(var j=0;j<tabs.length;j++){ tabs[j].className=""; $(tabs[j].getAttribute("data-t")).className="panel" }
   this.className="act"; $(this.getAttribute("data-t")).className="panel show";
 };
+
+/* Chip "Nghi hu" - chen bang JS de khong phai sua index.html */
+(function(){
+  var ro=document.querySelector(".readout");
+  if(!ro || $("fbTop")) return;
+  var s=document.createElement("span");
+  s.className="chip";
+  s.style.gridColumn="1/-1";
+  s.innerHTML='<i>Nghi hú — 3 đỉnh nhô nhất so với nền phổ (dB)</i><b id="fbTop">—</b>';
+  ro.appendChild(s);
+})();
 
 resize(); loop();
