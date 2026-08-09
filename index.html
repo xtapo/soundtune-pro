@@ -25,8 +25,6 @@ header h1 span{color:var(--acc)}
 .grow{flex:1}
 .badge{font-size:11px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--dim);background:#0a121c;white-space:nowrap}
 .badge.on{color:#03211a;background:var(--ok);border-color:var(--ok);font-weight:700}
-
-/* Nut chuyen doi 2 che do */
 .modesw{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:#0a121c;font-size:11.5px;font-weight:800;flex:0 0 auto}
 .modesw span,.modesw a{padding:6px 12px;color:var(--dim);text-decoration:none;white-space:nowrap;transition:.15s}
 .modesw .cur{background:var(--acc);color:#04202b}
@@ -34,7 +32,6 @@ header h1 span{color:var(--acc)}
 .swBig{display:block;text-align:center;text-decoration:none;color:#04202b;font-weight:800;font-size:14.5px;
   background:linear-gradient(180deg,#22d3ee,#0891b2);border:1px solid #67e8f9;border-radius:12px;padding:13px 12px;margin-top:14px}
 .swBig small{display:block;font-weight:600;font-size:11.5px;color:#04384a;margin-top:2px}
-
 button{font-family:inherit;font-size:12.5px;color:var(--txt);background:#16222f;border:1px solid var(--line);border-radius:8px;padding:7px 11px;cursor:pointer;transition:.15s}
 button:hover{background:#1e2f42;border-color:#2d4359}
 button.primary{background:linear-gradient(180deg,#0891b2,#0e7490);border-color:#22d3ee;font-weight:700}
@@ -51,15 +48,12 @@ input[type=range]{width:150px;accent-color:var(--acc)}
 .val{font-variant-numeric:tabular-nums;color:var(--acc);font-weight:700;min-width:52px;display:inline-block;white-space:nowrap}
 .chartbox{position:relative;background:var(--pnl2);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 canvas#rta{display:block;width:100%;height:390px;touch-action:none}
-
-/* Hang thong so: luoi co dinh 3 cot (mobile 2 cot) -> khong bao gio doi so dong */
 .readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 10px;border-top:1px solid var(--line);background:#0a121d;font-variant-numeric:tabular-nums}
 .chip{background:#111e2c;border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px}
 .chip b{color:var(--acc)}
 .readout .chip{min-width:0;overflow:hidden}
 .readout .chip i{display:block;font-style:normal;color:var(--dim);font-size:10px;letter-spacing:.4px;text-transform:uppercase;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .readout .chip b{display:block;color:var(--acc);font-size:12.5px;font-weight:700;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
 .tabs{display:flex;gap:6px;margin:14px 0 10px;flex-wrap:wrap}
 .tabs button{border-radius:999px}
 .panel{display:none;background:var(--pnl);border:1px solid var(--line);border-radius:12px;padding:12px}
@@ -90,7 +84,19 @@ td b{color:var(--acc)}
 #alert th{color:#fde68a}
 #alert td b{color:#fff}
 #alert .fix{margin-top:8px;font-size:11.8px;line-height:1.5;color:#fde68a;background:rgba(0,0,0,.28);border-radius:8px;padding:7px 8px}
-
+/* ===== Vocal Range ===== */
+#vrKeys,#vrTrack{display:block;width:100%;background:#0d131a;border:1px solid var(--line);border-radius:10px;touch-action:none}
+#vrKeys{height:136px;margin-top:12px}
+#vrTrack{height:180px;margin-top:10px}
+.vrgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin-top:12px}
+.vrcard{background:#111a23;border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:8px;padding:11px 12px}
+.vrcard .k{color:var(--dim);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.vrcard .v{font-size:20px;font-weight:800;color:#dff0ff;margin-top:4px;line-height:1.2}
+.vrcard .s{color:var(--dim);font-size:11.5px;margin-top:3px;min-height:15px}
+.vrcard.ok{border-left-color:var(--ok)}
+.vrcard.warm{border-left-color:var(--warn)}
+.vrbar{height:7px;border-radius:999px;background:#1b2634;overflow:hidden;margin-top:7px}
+.vrbar i{display:block;height:100%;width:0%;background:var(--acc)}
 @media(max-width:760px){
   header{padding:8px 10px;gap:7px}
   header h1{font-size:12.5px;flex:1 1 100%}
@@ -104,11 +110,15 @@ td b{color:var(--acc)}
   .tabs{gap:5px;margin:12px 0 9px}
   .tabs button{font-size:11.5px;padding:6px 10px}
   #alert{right:8px;left:8px;bottom:8px;width:auto}
+  #vrKeys{height:110px}
+  #vrTrack{height:148px}
+  .vrgrid{grid-template-columns:1fr 1fr}
 }
 @media(max-width:400px){
   .readout .chip b{font-size:10.8px}
   .readout .chip i{font-size:9px}
   .modesw span,.modesw a{padding:5px 9px;font-size:11px}
+  .vrgrid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -118,7 +128,7 @@ td b{color:var(--acc)}
   <h1>SoundTune <span>Pro</span> — RTA &amp; Feedback Detector</h1>
   <nav class="modesw" title="Chuyển đổi chế độ">
     <a href="easy.html">🙂 Dễ</a>
-    <span class="cur">🎛 Chuyên</span>
+    <span class="cur">🏛 Chuyên</span>
   </nav>
   <span id="stt" class="badge">Micro: chưa bật</span>
   <span id="srate" class="badge">—</span>
@@ -160,7 +170,7 @@ td b{color:var(--acc)}
   <div class="chartbox">
     <canvas id="rta"></canvas>
     <div class="readout">
-      <span class="chip"><i>Con trỏ</i><b><span id="cF">—</span> · <span id="cD">—</span></b></span>
+      <span class="chip"><i>Con trỏ</i><b><span id="cF">—</span> &middot; <span id="cD">—</span></b></span>
       <span class="chip"><i>Băng tần gần nhất</i><b id="cB">—</b></span>
       <span class="chip"><i>Đỉnh hiện tại</i><b id="pk">—</b></span>
       <span class="chip"><i>Vùng trội</i><b id="zn">—</b></span>
@@ -174,6 +184,7 @@ td b{color:var(--acc)}
     <button data-t="p2">TempoSync (Echo &amp; Reverb)</button>
     <button data-t="p3">Mô phỏng hú rít &amp; Test Voice</button>
     <button data-t="p4">Hướng dẫn cân chỉnh</button>
+    <button data-t="p5">🎵 Vocal Range — Đo tầm giọng</button>
   </div>
 
   <div id="p1" class="panel show">
@@ -209,7 +220,7 @@ td b{color:var(--acc)}
       <thead><tr><th>Thông số vang số DSP</th><th>Giá trị đề nghị</th></tr></thead>
       <tbody id="revBody"></tbody>
     </table>
-    <div class="hint">Nhấn TAP TEMPO theo phách nhạc từ 4 lần trở lên để máy tự tính BPM. Echo Delay lấy theo nốt (1/4 = 1 phách). RT60 ở bảng này là <b>vang của máy DSP</b> tính theo nhịp — muốn biết <b>vang thật của phòng</b>, sang tab “Đo phòng thật”.</div>
+    <div class="hint">Nhấn TAP TEMPO theo phách nhạc từ 4 lần trở lên để máy tự tính BPM. Echo Delay lấy theo nốt (1/4 = 1 phách).</div>
   </div>
 
   <div id="p3" class="panel">
@@ -244,17 +255,98 @@ td b{color:var(--acc)}
         <tr><td>3</td><td>Đo <b>RT60 thật của phòng</b> (cùng tab) để biết phòng vang 0.6 s hay 2.5 s, từ đó quyết định lượng echo và mức cắt trung.</td></tr>
         <tr><td>4</td><td>Phát nhạc hồng (pink noise) hoặc nhạc quen tai ở mức ~85 dB. Chọn tốc độ đo <b>Chậm</b> để xem đáp tuyến tổng thể, lưu vào <b>DSP 1</b>.</td></tr>
         <tr><td>5</td><td>Chỉnh EQ phòng: SUB/BASS không vượt MID quá 6 dB; hõm 200–400 Hz làm tiếng đục; 2–4 kHz quá cao gây gắt.</td></tr>
-        <tr><td>6</td><td>Ring-out: chọn <b>Nhấn mạnh hú</b>, mở dần volume mic. Máy báo vàng “sắp hú” thì dừng tay; khi có cảnh báo đỏ thì cắt đúng Fc / Q / Gain trong bảng. Cuối buổi xem tab <b>Dự đoán hú · Ring-out</b> để lấy 5 điểm cắt cố định.</td></tr>
+        <tr><td>6</td><td>Ring-out: chọn <b>Nhấn mạnh hú</b>, mở dần volume mic. Máy báo vàng “sắp hú” thì dừng tay; khi có cảnh báo đỏ thì cắt đúng Fc / Q / Gain trong bảng.</td></tr>
         <tr><td>7</td><td>Sau mỗi lần cắt, lưu snapshot mới (DSP 2, 3…) để so sánh và tránh cắt trùng lặp làm mất tiếng.</td></tr>
         <tr><td>8</td><td>Cuối cùng dùng TempoSync để set Echo Delay và RT60 đúng nhịp bài hát. Xong thì bấm <b>Xuất báo cáo</b> ở thanh Hồ sơ để lưu hồ sơ cho khách.</td></tr>
       </tbody>
     </table>
     <div class="hint">Lưu ý: dBFS là mức số của trình duyệt, không phải SPL tuyệt đối. Hãy dùng thanh “Hiệu chuẩn SPL” để khớp với máy đo SPL cầm tay (hoặc app đo SPL) rồi mới đọc giá trị SPL.</div>
-    <div class="hint"><b>Đánh dấu tần số:</b> chạm giữ khoảng nửa giây (hoặc bấm đúp chuột) lên đồ thị để ghim một tần số cần theo dõi; nhãn hồng sẽ hiện mức dB tại đó liên tục trong lúc bạn vặn núm. Nút <b>Khoá đỉnh hiện tại</b> ghim ngay băng tần đang cao nhất. Bấm vào nhãn hồng ở dưới đồ thị để xoá.</div>
-    <div class="hint"><b>Ba phép đo thật</b> (tab “Đo phòng thật”) đều cần bật mic và giữ phòng im lặng: máy tự phát tín hiệu ra loa rồi thu lại để tính. Đo pha và đo trễ phải giữ micro đúng một vị trí cho cả hai lần đo, và chỉ mở một loa mỗi lần.</div>
+    <div class="hint"><b>Đánh dấu tần số:</b> chạm giữ khoảng nửa giây (hoặc bấm đúp chuột) lên đồ thị để ghim một tần số cần theo dõi.</div>
+    <div class="hint"><b>Ba phép đo thật</b> (đều cần bật mic và giữ phòng im lặng): máy tự phát tín hiệu ra loa rồi thu lại để tính.</div>
   </div>
 
-  <a class="swBig" href="easy.html">🙂 CHUYỂN SANG CHẾ ĐỘ DỄ<small>Chỉ dẫn từng bước bằng lời thường, cho người không chuyên về âm thanh</small></a>
+  <!-- ===== VOCAL RANGE ===== -->
+  <div id="p5" class="panel">
+    <h3>🎵 Vocal Range Test — Đo tầm giọng</h3>
+    <div class="simrow">
+      <button id="vrRec" class="primary">● Bắt đo</button>
+      <button id="vrReset" class="small">↺ Reset</button>
+      <div class="fld"><label>Giữ nốt (s)</label>
+        <select id="vrHold">
+          <option value="1000">1 s (dễ nhất)</option>
+          <option value="2000" selected>2 s (chuẩn)</option>
+          <option value="3000">3 s (khắt khe)</option>
+        </select>
+      </div>
+      <div class="fld"><label>Ngưỡng micro</label>
+        <input type="range" id="vrGate" min="-60" max="-24" step="1" value="-42">
+        <span class="val" id="vrGateV">-42 dB</span>
+      </div>
+      <div class="fld"><label><input type="checkbox" id="vrTts" checked> Đọc kết quả</label></div>
+    </div>
+    <div class="vrgrid" style="margin-top:10px">
+      <div class="vrcard">
+        <div class="k">Cao độ hiện tại</div>
+        <div class="v" id="vrNow">—</div>
+        <div class="s"><span id="vrCents">—</span> &nbsp;&middot;&nbsp; rõ nét <span id="vrClar">—</span></div>
+      </div>
+      <div class="vrcard">
+        <div class="k">Nốt đang giữ / thời gian</div>
+        <div class="v" id="vrHoldNow">—</div>
+        <div class="s">Đo được: <b id="vrTime">0,0 s</b></div>
+      </div>
+    </div>
+    <canvas id="vrKeys" height="136"></canvas>
+    <canvas id="vrTrack" height="180"></canvas>
+    <div class="vrgrid">
+      <div class="vrcard ok">
+        <div class="k">Tầm thoải mái (giữ ≥ ngưỡng)</div>
+        <div class="v" id="vrComf">—</div>
+        <div class="s" id="vrComfSub">Giữ mỗi nốt ≥ 2 s mới được tính</div>
+      </div>
+      <div class="vrcard warm">
+        <div class="k">Nốt cực hạn (chớp nhoáng)</div>
+        <div class="v" id="vrExt">—</div>
+        <div class="s" id="vrExtSub">Chỉ tham khảo, không dùng chọn tông</div>
+      </div>
+      <div class="vrcard">
+        <div class="k">Nốt giữ lâu nhất</div>
+        <div class="v" id="vrBest">—</div>
+        <div class="s" id="vrBestSub">Nốt bạn giữ được lâu nhất</div>
+      </div>
+      <div class="vrcard">
+        <div class="k">Loại giọng gần nhất</div>
+        <div class="v" id="vrType">—</div>
+        <div class="s" id="vrTypeSub">—</div>
+        <div class="vrbar"><i id="vrTypeBar"></i></div>
+      </div>
+    </div>
+    <table style="margin-top:14px">
+      <thead><tr><th>Loại giọng</th><th>Tầm chuẩn</th><th>Khớp</th></tr></thead>
+      <tbody id="vrTypeBody"></tbody>
+    </table>
+    <div class="simrow" style="margin-top:14px">
+      <div class="fld"><label>Nốt cao nhất bài hát</label>
+        <input type="text" id="vrSongTop" placeholder="ví dụ: A4" style="width:90px;font-family:inherit;font-size:12.5px;color:var(--txt);background:#0d1826;border:1px solid var(--line);border-radius:8px;padding:6px 8px">
+      </div>
+      <button id="vrKeyCalc" class="small">Tính key</button>
+      <span class="chip" style="flex:1"><b id="vrKeyOut">—</b></span>
+    </div>
+    <div class="simrow" style="margin-top:10px">
+      <div class="fld"><label>Nốt mẫu phát ra</label>
+        <input type="text" id="vrRefNote" value="A4" style="width:70px;font-family:inherit;font-size:12.5px;color:var(--txt);background:#0d1826;border:1px solid var(--line);border-radius:8px;padding:6px 8px">
+      </div>
+      <button id="vrRefPlay" class="small">▶ Phát</button>
+      <button id="vrRefStop" class="small">■ Dừng</button>
+      <button id="vrCopy" class="small">📋 Copy kết quả</button>
+      <button id="vrPng" class="small">📷 Xuất PNG</button>
+    </div>
+    <div class="hint"><b>Cách dùng:</b> Đeo tai nghe → Bật mic → Mở tab này → Nhấn <b>Bắt đo</b> → Hát nốt “a” từ thấp nhất lên cao nhất, giữ mỗi nốt ít nhất 2 giây. Đừng thở dùng loa ngoài để tránh phản hồi.</div>
+    <div class="hint"><b>Bàn phím xanh lá</b> = vùng thoải mái &middot; <b>Vàng</b> = cực hạn &middot; Dấu chấm xanh lờ = nốt hiện tại &middot; Thuật toán NSDF, bắt từ 55 Hz nên đọc được cả giọng trầm.</div>
+  </div>
+  <!-- ===== /VOCAL RANGE ===== -->
+
+  <a class="swBig" href="easy.html">🙂 CHUYỈN SANG CHẼ ĐỘ DỄ<small>Chỉ dẫn từng bước bằng lời thường, cho người không chuyên về âm thanh</small></a>
 
 </div>
 
@@ -277,5 +369,6 @@ td b{color:var(--acc)}
 <script src="extras.js"></script>
 <script src="lab.js"></script>
 <script src="ring.js"></script>
+<script src="vocal-range.js"></script>
 </body>
 </html>
