@@ -16,7 +16,7 @@ var noiseNode=null,noiseGain=null,noiseOn=false;
 var prevScore=null,speakText='',lastFb=0;
 var fbBand=-1,fbSince=0,fbHits=0,fbShown=false;
 function el(i){return document.getElementById(i)}
-function fmtF(f){return f>=1000?(f/1000).toFixed(f>=10000?1:2)+' kHz':f+' Hz'}
+function fmtF(f){return f>=1000?(f/1000).toFixed(f>=10000?1:2)+' kHz':(f>=100?Math.round(f):Math.round(f*10)/10)+' Hz'}
 
 var ph='';
 for(var i=0;i<PRE.length;i++)ph+='<button class="pz'+(i===0?' on':'')+'" data-i="'+i+'"><b>'+PRE[i].n+'</b><span>'+PRE[i].d+'</span></button>';
@@ -92,26 +92,62 @@ function prom(db,i){
  arr.sort(function(a,b){return a-b});
  return db[i]-arr[Math.floor(arr.length/2)];
 }
+
+/* Tan so THUC trong mot bang 1/3 octave.
+   Truoc day bao ra ISO[band] tuc tam bang, lech toi 12 % (vi du hu 1730 Hz bi bao
+   la 1600 Hz) nen cat notch theo so do la cat lech. Ham nay tim dinh nhon nhat
+   bang bin FFT trong bang do roi noi suy parabol de ra tan so chinh xac. */
+function fineF(b){
+ if(!an||!freq||!bins||b<0||b>30)return ISO[b]||0;
+ var df=ctx.sampleRate/an.fftSize,nb=an.frequencyBinCount;
+ var i0=Math.max(2,bins[b][0]),i1=Math.min(nb-3,bins[b][1]);
+ var pi=-1,pv=-300,i,v;
+ for(i=i0;i<=i1;i++){
+  v=freq[i];
+  if(v<freq[i-1]||v<freq[i+1])continue;
+  if(v>pv){pv=v;pi=i}
+ }
+ if(pi<0)return ISO[b];
+ var l=freq[pi-1],c=freq[pi],r=freq[pi+1],dd=l-2*c+r,off=0;
+ if(dd<0){off=0.5*(l-r)/dd;if(!isFinite(off)||Math.abs(off)>0.5)off=0}
+ var f=(pi+off)*df;
+ if(f<ISO[b]/1.3||f>ISO[b]*1.3)return ISO[b];
+ return f;
+}
 function clearFb(){fbBand=-1;fbHits=0;fbShown=false;el('warn').classList.remove('on')}
 function guard(db,bb){
  var cfg=SENS[sens];
  if(!cfg||measuring||noiseOn||bb<-68){if(fbHits||fbShown)clearFb();return}
  var best=-1,bp=0,i;
- for(i=6;i<27;i++){
+ for(i=6;i<29;i++){
   var pr=prom(db,i);
   if(db[i]>-62&&pr>bp){bp=pr;best=i}
  }
+ /* Lui ve tan so goc: neu bang dang xet chi la hoa am (x2 = -3 bang, x3 = -5 bang)
+    cua mot bang thap hon cung nhon thi lay bang thap hon, do moi la cho hu that. */
+ var moved=0;
+ if(best>=0){
+  for(var pass=0;pass<2;pass++){
+   var m2=best-3,m3=best-5,mv=0;
+   if(m2>=6&&db[m2]>-62&&prom(db,m2)>=Math.max(6,bp*0.45)){best=m2;bp=prom(db,best);mv=1}
+   else if(m3>=6&&db[m3]>-62&&prom(db,m3)>=Math.max(6,bp*0.45)){best=m3;bp=prom(db,best);mv=1}
+   if(!mv)break;
+   moved=1;
+  }
+ }
+ /* Con thay hoa am phia tren thi kha nang la giong hat / nhac cu chu khong phai hu.
+    Neu vua lui hoa am o tren thi giam nhe hinh phat de khong bo sot hu that co meo tieng. */
  if(best>=0){
   var h2=Math.max(prom(db,best+3),prom(db,best+4));
   var h3=Math.max(prom(db,best+5),prom(db,best+6));
-  if(h2>7)bp-=7;
-  if(h3>7)bp-=5;
+  if(h2>7)bp-=moved?3:7;
+  if(h3>7)bp-=moved?2:5;
  }
  var now=performance.now();
  if(best>=0&&bp>=cfg.th){
   if(fbBand<0||Math.abs(best-fbBand)>1){fbBand=best;fbSince=now;fbHits=1}
   else{fbBand=best;fbHits++}
-  if(now-fbSince>=cfg.hold&&fbHits>=cfg.hits)showFb(ISO[fbBand],bp,now);
+  if(now-fbSince>=cfg.hold&&fbHits>=cfg.hits)showFb(fineF(fbBand),bp,now);
  }else{
   fbHits-=2;
   if(fbHits<=0)clearFb();
@@ -119,7 +155,7 @@ function guard(db,bb){
 }
 function showFb(f,bp,now){
  var cut=-Math.min(12,Math.max(3,Math.round(bp*0.6*2)/2));
- el('warnT').innerHTML='Đang hú ở khoảng <b>'+fmtF(f)+'</b>.<br>1) Hạ nhỏ <b>ECHO</b> rồi <b>VOL micro</b> một chút.<br>2) Kéo micro ra xa loa, đừng chĩa vào loa.<br>3) Nếu có DSP: cắt tại <b>Fc '+fmtF(f)+' · Q = 8 · '+cut+' dB</b>.<br><span style="color:#c9b26a">Không nghe hú? Hãy chọn “Ít nhạy” hoặc “Tắt” ở mục Cảnh báo hú rít (bước 2).</span>';
+ el('warnT').innerHTML='Đang hú ở <b>'+fmtF(f)+'</b>.<br>1) Hạ nhỏ <b>ECHO</b> rồi <b>VOL micro</b> một chút.<br>2) Kéo micro ra xa loa, đừng chĩa vào loa.<br>3) Nếu có DSP: cắt tại <b>Fc '+fmtF(f)+' · Q = 8 · '+cut+' dB</b>.<br><span style="color:#c9b26a">Không nghe hú? Hãy chọn “Ít nhạy” hoặc “Tắt” ở mục Cảnh báo hú rít (bước 2).</span>';
  el('warn').classList.add('on');
  if(!fbShown||now-lastFb>7000){lastFb=now;say('Đang hú rít ở '+fmtF(f)+'. Hãy giảm núm ê cô hoặc âm lượng micro.')}
  fbShown=true;
